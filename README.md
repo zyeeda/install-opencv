@@ -64,6 +64,11 @@ there's no swap partition created by default. To create a 1GB swap file use:
 * OpenCV home `/home/<username>/opencv-2.4.x`
 * Java and Python bindings `/home/<username>/opencv-2.4.x/build`
 
+#### Updates
+Once you've built ffmpeg and OpenCV with this package you will only need to
+build OpenCV in the future. You can also remove any package installed with
+checkinstall using `sudo dpkg -r packagename`.
+
 ### Java
 To run Java programs in Eclipse you need add the OpenCV library.
 * Window, Preferences, Java, Build Path, User Libraries, New..., OpenCV, OK
