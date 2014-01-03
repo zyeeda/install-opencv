@@ -6,7 +6,11 @@
  */
 package com.codeferm.opencv;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -24,88 +28,110 @@ import org.opencv.objdetect.HOGDescriptor;
 
 /**
  * Histogram of Oriented Gradients ([Dalal2005]) object detector.
- * 
+ *
  * args[0] = source file or will default to "../resources/walking.avi" if no
  * args passed.
- * 
+ *
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
  */
 public class PeopleDetect {
-	/**
-	 * Serializable class version number.
-	 */
-	private static final long serialVersionUID = -3988850198352906351L;
-	/* Load the OpenCV system library */
-	static {
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-	}
-	/**
-	 * This is missing from org.opencv.highgui.Highgui.
-	 */
-	private static final int CV_CAP_PROP_FPS = 5;
+    /**
+     * Serializable class version number.
+     */
+    private static final long serialVersionUID = -3988850198352906351L;
+    /**
+     * Logger.
+     */
+    private static final Logger logger = Logger
+            .getLogger(Canny.class.getName());
+    /* Load the OpenCV system library */
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
 
-	/**
-	 * Create window, frame and set window to visible.
-	 * 
-	 * args[0] = camera index, url or will default to "0" if no args passed.
-	 * 
-	 * @param args
-	 *            String array of arguments.
-	 */
-	public static void main(final String[] args) {
-		String url = null;
-		// Check how many arguments were passed in
-		if (args.length == 0) {
-			// If no arguments were passed then default to local file
-			url = "../resources/walking.avi";
-		} else {
-			url = args[0];
-		}
-		System.out.println(String.format("URL: %s", url));
-		final VideoCapture videoCapture = new VideoCapture(url);
-		final Size frameSize = new Size(
-				(int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
-				(int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
-		System.out.println(String.format("Resolution: %s", frameSize));
-		final FourCC fourCC = new FourCC("DIVX");
-		VideoWriter videoWriter = new VideoWriter(
-				"../output/people-detect-java.avi", fourCC.toInt(),
-				videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);
-		final Mat mat = new Mat();
-		final HOGDescriptor hog = new HOGDescriptor();
-		// final HOGDescriptor hog = new HOGDescriptor(new Size(128, 64),
-		// new Size(16, 16), new Size(8, 8), new Size(8, 8), 9, 0, -1, 0,
-		// 0.2, false, 64);
-		final MatOfRect foundLocations = new MatOfRect();
-		final MatOfDouble foundWeights = new MatOfDouble();
-		final Size winStride = new Size(8, 8);
-		final Size padding = new Size(32, 32);
-		final MatOfFloat descriptors = HOGDescriptor.getDefaultPeopleDetector();
-		hog.setSVMDetector(descriptors);
-		int frames = 0;
-		int framesWithPeople = 0;
-		final long startTime = System.currentTimeMillis();
-		while (videoCapture.read(mat)) {
-			hog.detectMultiScale(mat, foundLocations, foundWeights, 0.0,
-					winStride, padding, 1.05, 2.0, false);
-			if (foundLocations.rows() > 0) {
-				framesWithPeople++;
-				List<Rect> rectList = foundLocations.toList();
-				for (Rect rect : rectList) {
-					Core.rectangle(mat, new Point(rect.x, rect.y), new Point(
-							rect.x + rect.width, rect.y + rect.height),
-							new Scalar(0, 255, 0));
-				}
-			}
-			videoWriter.write(mat);
-			frames++;
-		}
-		final long estimatedTime = System.currentTimeMillis() - startTime;
-		System.out.println(String.format("%d frames, %d frames with people",
-				frames, framesWithPeople));
-		System.out.println(String.format("Elipse time: %4.2f seconds",
-				(double) estimatedTime / 1000));
-	}
+    /**
+     * Private constructor prevents instantiation by untrusted callers.
+     */
+    private PeopleDetect() {
+    }
+
+    /**
+     * Create window, frame and set window to visible.
+     *
+     * args[0] = camera index, url or will default to "0" if no args passed.
+     *
+     * @param args
+     *            String array of arguments.
+     */
+    public static void main(final String[] args) {
+        String url = null;
+        final String outputFile = "../output/people-detect-java.avi";
+        // Check how many arguments were passed in
+        if (args.length == 0) {
+            // If no arguments were passed then default to local file
+            url = "../resources/walking.avi";
+        } else {
+            url = args[0];
+        }
+        // Custom logging properties via class loader
+        try {
+            LogManager.getLogManager().readConfiguration(
+                    Canny.class.getClassLoader().getResourceAsStream(
+                            "logging.properties"));
+        } catch (SecurityException | IOException e1) {
+            e1.printStackTrace();
+        }
+        logger.log(Level.INFO, String.format("Input file: %s", url));
+        logger.log(Level.INFO, String.format("Output file: %s", outputFile));
+        final VideoCapture videoCapture = new VideoCapture(url);
+        final Size frameSize = new Size(
+                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
+                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+        logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
+        final FourCC fourCC = new FourCC("DIVX");
+        VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(),
+                videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);
+        final Mat mat = new Mat();
+        final HOGDescriptor hog = new HOGDescriptor();
+        // final HOGDescriptor hog = new HOGDescriptor(new Size(128, 64),
+        // new Size(16, 16), new Size(8, 8), new Size(8, 8), 9, 0, -1, 0,
+        // 0.2, false, 64);
+        final MatOfRect foundLocations = new MatOfRect();
+        final MatOfDouble foundWeights = new MatOfDouble();
+        final Size winStride = new Size(8, 8);
+        final Size padding = new Size(32, 32);
+        final MatOfFloat descriptors = HOGDescriptor.getDefaultPeopleDetector();
+        hog.setSVMDetector(descriptors);
+        int frames = 0;
+        int framesWithPeople = 0;
+        final long startTime = System.currentTimeMillis();
+        final Scalar rectColor = new Scalar(0, 255, 0);
+        while (videoCapture.read(mat)) {
+            hog.detectMultiScale(mat, foundLocations, foundWeights, 0.0,
+                    winStride, padding, 1.05, 2.0, false);
+            if (foundLocations.rows() > 0) {
+                List<Double> weightList = foundWeights.toList();
+                framesWithPeople++;
+                List<Rect> rectList = foundLocations.toList();
+                int i = 0;
+                for (Rect rect : rectList) {
+                    Core.rectangle(mat, new Point(rect.x, rect.y), new Point(
+                            rect.x + rect.width, rect.y + rect.height),
+                            rectColor, 2);
+                    Core.putText(mat, String.format("%1.2f",
+                            weightList.get(i++)), new Point(rect.x, rect.y-4),
+                            Highgui.CV_FONT_NORMAL, 0.6, rectColor, 2);
+                }
+            }
+            videoWriter.write(mat);
+            frames++;
+        }
+        final long estimatedTime = System.currentTimeMillis() - startTime;
+        logger.log(Level.INFO, String.format(
+                "%d frames, %d frames with people", frames, framesWithPeople));
+        logger.log(Level.INFO, String.format("Elipse time: %4.2f seconds",
+                (double) estimatedTime / 1000));
+    }
 }

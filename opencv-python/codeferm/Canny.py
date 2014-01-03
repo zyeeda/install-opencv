@@ -5,7 +5,7 @@ Created by Steven P. Goldsmith on December 23, 2013
 sgoldsmith@codeferm.com
 """
 
-import sys, time, cv2, cv2.cv as cv
+import logging, sys, time, cv2, cv2.cv as cv
 
 """Canny Edge Detection of video.
 
@@ -15,16 +15,25 @@ sys.argv[1] = source file or will default to "../../resources/traffic.mp4" if no
 
 """
 
+# Configure logger
+logger = logging.getLogger("VideoLoop")
+logger.setLevel("INFO")
+formatter = logging.Formatter("%(asctime)s %(levelname)-8s %(module)s %(message)s")
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+outputFile = "../../output/canny-python.avi"
 # If no args passed then default to internal file
 if len(sys.argv) < 2:
     url = "../../resources/traffic.mp4"
 else:
     url = sys.argv[1]
-print "URL: %s" % url
+logger.info("Input file: %s" % url)
+logger.info("Output file: %s" % outputFile)
 videoCapture = cv2.VideoCapture(url)
-print "Resolution: %d x %d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
-                               videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))
-videoWriter = cv2.VideoWriter("../../output/canny-python.avi", cv.CV_FOURCC(*'DIVX'), videoCapture.get(cv.CV_CAP_PROP_FPS),
+logger.info("Resolution: %dx%d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
+                               videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
+videoWriter = cv2.VideoWriter(outputFile, cv.CV_FOURCC(*'DIVX'), videoCapture.get(cv.CV_CAP_PROP_FPS),
                               (int(videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))), True)
 lastFrame = False
 frames = 0
@@ -45,7 +54,7 @@ while not lastFrame:
     else:
         lastFrame = True
 elapse = time.time() - start
-print "%d frames" % frames
-print "Elapse time: %4.2f seconds" % elapse
+logger.info("%d frames" % frames)
+logger.info("Elapse time: %4.2f seconds" % elapse)
 del videoCapture
 del videoWriter

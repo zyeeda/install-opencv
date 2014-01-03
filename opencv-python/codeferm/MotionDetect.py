@@ -5,7 +5,7 @@ Created by Steven P. Goldsmith on December 23, 2013
 sgoldsmith@codeferm.com
 """
 
-import sys, time, numpy, cv2, cv2.cv as cv
+import logging, sys, time, numpy, cv2, cv2.cv as cv
 
 """Motion detector.
     
@@ -31,15 +31,22 @@ def contours(source):
         movementLocations.append(rect)
     return movementLocations
 
+# Configure logger
+logger = logging.getLogger("VideoLoop")
+logger.setLevel("INFO")
+formatter = logging.Formatter("%(asctime)s %(levelname)-8s %(module)s %(message)s")
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 # If no args passed then default to internal file
 if len(sys.argv) < 2:
     url = "../../resources/traffic.mp4"
 else:
     url = sys.argv[1]
 videoCapture = cv2.VideoCapture(url)
-print "URL: %s" % url
-print "Resolution: %d x %d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
-                               videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))
+logger.info("URL: %s" % url)
+logger.info("Resolution: %dx%d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
+                               videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
 lastFrame = False
 frames = 0
 framesWithMotion = 0
@@ -75,7 +82,7 @@ while not lastFrame:
     else:
         lastFrame = True
 elapse = time.time() - start
-print "%d frames, %d frames with motion" % (frames, framesWithMotion)
-print "Elapse time: %4.2f seconds" % elapse
+logger.info("%d frames, %d frames with motion" % (frames, framesWithMotion))
+logger.info("Elapse time: %4.2f seconds" % elapse)
 del videoCapture
 

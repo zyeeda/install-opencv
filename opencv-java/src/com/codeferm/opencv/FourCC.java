@@ -12,15 +12,24 @@ package com.codeferm.opencv;
  * This class wraps a 32-bit value to be used as a 4CC inside an AVI file, so
  * that it is guaranteed to be valid, and it incurs no overhead if used
  * repeatedly.
- * 
+ *
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
  */
 final class FourCC {
+    /**
+     * Integer FourCC value.
+     */
     private final int value;
 
-    public FourCC(String fourcc) {
+    /**
+     * Convert FourCC String value to int.
+     *
+     * @param fourcc
+     *            FourCC String.
+     */
+    public FourCC(final String fourcc) {
         if (fourcc == null) {
             throw new NullPointerException("FourCC cannot be null");
         }
@@ -42,6 +51,11 @@ final class FourCC {
         this.value = val;
     }
 
+    /**
+     * Return FourCC int value.
+     *
+     * @return int value.
+     */
     public int toInt() {
         return value;
     }

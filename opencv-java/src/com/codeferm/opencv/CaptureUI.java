@@ -11,9 +11,14 @@ import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
@@ -21,9 +26,9 @@ import org.opencv.imgproc.Imgproc;
 /**
  * A simple video capture applet. The Java bindings do not have an imshow
  * equivalent (highgui wrapper) yet.
- * 
+ *
  * args[0] = camera index, url or will default to "0" if no args passed.
- * 
+ *
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
@@ -33,6 +38,11 @@ public final class CaptureUI extends Applet implements Runnable {
      * Serializable class version number.
      */
     private static final long serialVersionUID = -3988850198352906349L;
+    /**
+     * Logger.
+     */
+    private static final Logger logger = Logger.getLogger(CaptureUI.class
+            .getName());
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -41,6 +51,10 @@ public final class CaptureUI extends Applet implements Runnable {
      * Class for video capturing from video files or cameras.
      */
     private VideoCapture videoCapture = null;
+    /**
+     * Frame size.
+     */
+    private Size frameSize = null;
     /**
      * Holds conversion from Mat to BufferedImage.
      */
@@ -56,26 +70,37 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * Initialize VideoCapture.
-     * 
+     *
      * @param url
      *            Camera URL.
      */
     public CaptureUI(final String url) {
-        // See if URL in an integer: -? = negative sign, could have none or one,
+        // See if URL is an integer: -? = negative sign, could have none or one,
         // \\d+ = one or more digits
         if (url.matches("-?\\d+")) {
             videoCapture = new VideoCapture(Integer.parseInt(url));
         } else {
             videoCapture = new VideoCapture(url);
         }
-        System.out.println("Press [Esc] to exit");
-        System.out.println(String.format("URL: %s", url));
+        // Custom logging properties via class loader
+        try {
+            LogManager.getLogManager().readConfiguration(
+                    Canny.class.getClassLoader().getResourceAsStream(
+                            "logging.properties"));
+        } catch (SecurityException | IOException e1) {
+            e1.printStackTrace();
+        }
+        frameSize = new Size(
+                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
+                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+        logger.log(Level.INFO, "Press [Esc] to exit");
+        logger.log(Level.INFO, String.format("URL: %s", url));
         init();
     }
 
     /**
      * VideoCapture accessor.
-     * 
+     *
      * @return VideoCapture.
      */
     public VideoCapture getCap() {
@@ -83,13 +108,20 @@ public final class CaptureUI extends Applet implements Runnable {
     }
 
     /**
+     * Frame size accessor.
+     *
+     * @return Frame size.
+     */
+    public Size getFrameSize() {
+        return frameSize;
+    }
+
+    /**
      * Displays diagnostic information.
      */
     @Override
     public void init() {
-        System.out.println(String.format("Resolution: %4.0f x%4.0f",
-                videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
-                videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT)));
+        logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
     }
 
     /**
@@ -132,8 +164,9 @@ public final class CaptureUI extends Applet implements Runnable {
                  */
                 convert(mat);
                 repaint();
-            } else
+            } else {
                 break;
+            }
             try {
                 // You will max out at ~50 FPS
                 Thread.sleep(20);
@@ -144,7 +177,7 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * Convert from Mat to BufferedImage.
-     * 
+     *
      * @param mat
      *            Mat array.
      */
@@ -168,15 +201,15 @@ public final class CaptureUI extends Applet implements Runnable {
     }
 
     @Override
-    public synchronized void update(Graphics g) {
+    public synchronized void update(final Graphics g) {
         g.drawImage(bufferedImage, 0, 0, this);
     }
 
     /**
      * Create window, frame and set window to visible.
-     * 
+     *
      * args[0] = camera index, url or will default to "0" if no args passed.
-     * 
+     *
      * @param args
      *            String array of arguments.
      */
@@ -200,9 +233,8 @@ public final class CaptureUI extends Applet implements Runnable {
         });
         frame.add(window);
         // Set frame size based on image size
-        frame.setSize((int) window.getCap()
-                .get(Highgui.CV_CAP_PROP_FRAME_WIDTH), (int) window.getCap()
-                .get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+        frame.setSize((int) window.getFrameSize().width,
+                (int) window.getFrameSize().height);
         frame.setVisible(true);
     }
 }
