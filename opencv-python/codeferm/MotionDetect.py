@@ -51,7 +51,7 @@ while not lastFrame:
     ret, image = videoCapture.read()
     if ret:
         # Generate work image by blurring
-        workImg = cv2.blur(image, (8,8))
+        workImg = cv2.blur(image, (8, 8))
         # Generate moving average image if needed
         if movingAvgImg == None:
             movingAvgImg = numpy.float32(workImg)

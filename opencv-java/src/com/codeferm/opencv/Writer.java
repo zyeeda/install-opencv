@@ -55,15 +55,13 @@ public class Writer {
         }
         System.out.println(String.format("URL: %s", url));
         VideoCapture videoCapture = new VideoCapture(url);
-        System.out.println(String.format("Resolution: %4.0f x%4.0f",
-                videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
-                videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT)));
         final Size frameSize = new Size(
                 (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
                 (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+        System.out.println(String.format("Resolution: %s", frameSize));
         final FourCC fourCC = new FourCC("DIVX");
-        VideoWriter videoWriter = new VideoWriter("../output/java.avi",
-                fourCC.toInt(), 30.0, frameSize, true);
+        VideoWriter videoWriter = new VideoWriter("../output/writer-java.avi",
+                fourCC.toInt(), videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);
         final Mat mat = new Mat();
         int frames = 0;
         final long startTime = System.currentTimeMillis();

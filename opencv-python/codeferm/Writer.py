@@ -20,11 +20,12 @@ if len(sys.argv) < 2:
     url = "../../resources/traffic.mp4"
 else:
     url = sys.argv[1]
-videoCapture = cv2.VideoCapture(url)
 print "URL: %s" % url
+videoCapture = cv2.VideoCapture(url)
 print "Resolution: %d x %d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
                                videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))
-videoWriter = cv2.VideoWriter("../../resources/python.avi", cv.CV_FOURCC(*'DIV3'), videoCapture.get(cv.CV_CAP_PROP_FPS), (int(videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))), True)
+videoWriter = cv2.VideoWriter("../../output/writer-python.avi", cv.CV_FOURCC(*'DIVX'), videoCapture.get(cv.CV_CAP_PROP_FPS),
+                              (int(videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))), True)
 lastFrame = False
 frames = 0
 start = time.time()

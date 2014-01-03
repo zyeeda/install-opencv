@@ -9,8 +9,10 @@ package com.codeferm.opencv;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
+import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
+import org.opencv.highgui.VideoWriter;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -53,9 +55,13 @@ public class Canny {
         }
         System.out.println(String.format("URL: %s", url));
         VideoCapture videoCapture = new VideoCapture(url);
-        System.out.println(String.format("Resolution: %4.0f x%4.0f",
-                videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
-                videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT)));
+        final Size frameSize = new Size(
+                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
+                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+        System.out.println(String.format("Resolution: %s", frameSize));
+        final FourCC fourCC = new FourCC("DIVX");
+        VideoWriter videoWriter = new VideoWriter("../output/canny-java.avi",
+                fourCC.toInt(), videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);        
         final Mat mat = new Mat();
         int frames = 0;
         final Mat gray = new Mat();
@@ -73,6 +79,8 @@ public class Canny {
             Imgproc.Canny(blur, edges, 100, 200, 3, false);
             // Add some colors to edges from original image
             Core.bitwise_and(mat, mat, dst, edges);
+            videoWriter.write(dst);
+            dst.release();
             frames++;
         }
         final long estimatedTime = System.currentTimeMillis() - startTime;

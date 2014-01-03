@@ -20,10 +20,12 @@ if len(sys.argv) < 2:
     url = "../../resources/traffic.mp4"
 else:
     url = sys.argv[1]
-videoCapture = cv2.VideoCapture(url)
 print "URL: %s" % url
+videoCapture = cv2.VideoCapture(url)
 print "Resolution: %d x %d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
                                videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))
+videoWriter = cv2.VideoWriter("../../output/canny-python.avi", cv.CV_FOURCC(*'DIVX'), videoCapture.get(cv.CV_CAP_PROP_FPS),
+                              (int(videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))), True)
 lastFrame = False
 frames = 0
 start = time.time()
@@ -38,6 +40,7 @@ while not lastFrame:
         edges = cv2.Canny(blur, 100, 200, apertureSize=3)
         # Add some colors to edges from original image
         dst = cv2.bitwise_and(image, image, mask=edges)
+        videoWriter.write(dst)
         frames += 1
     else:
         lastFrame = True
@@ -45,3 +48,4 @@ elapse = time.time() - start
 print "%d frames" % frames
 print "Elapse time: %4.2f seconds" % elapse
 del videoCapture
+del videoWriter
