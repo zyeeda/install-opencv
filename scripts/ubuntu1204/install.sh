@@ -132,7 +132,7 @@ fi
 if [ $removelibs = "True" ]; then
 	echo "\nRemoving any pre-installed ffmpeg, x264, and other dependencies...\n"
 	echo "Removing any pre-installed ffmpeg, x264, and other dependencies...\n" >> $logfile 2>&1
-	apt-get -y remove ffmpeg x264 libx264-dev libvpx-dev librtmp0 librtmp-dev libopencv-dev >> $logfile 2>&1
+	apt-get -y remove ffmpeg x264 libx264-dev libvpx-dev libopencv-dev >> $logfile 2>&1
 	apt-get -y update >> $logfile 2>&1
 fi
 
