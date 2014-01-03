@@ -80,32 +80,36 @@ To run Java programs in Eclipse you need add the OpenCV library.
 
 ![CaptureUI Java](images/captureui-java.png)
 
-The Canny example is slightly faster in Python (4.08 seconds) compared to Java
-(4.67 seconds). PeopleDetect is also slightly faster in Python (20.72 sceonds)
-compared to Java (21.58 seconds). In general, there's not enough difference
-in processing over 900 frames to pick one set of bindings over another for
-performance reasons.
+The Canny example is slightly faster in Java (3.08 seconds) compared to Python
+(3.18 seconds). In general, there's not enough difference in processing over 900
+frames to pick one set of bindings over another for performance reasons.
 `-agentlib:hprof=cpu=samples` is used to profile.
 ```
-URL: ../resources/traffic.mp4
-Resolution:  480 x 360
-923 frames
-Elipse time: 4.67 seconds
+Input file: ../resources/traffic.mp4
+Output file: ../output/canny-java.avi
+Resolution: 480x360
+919 frames
+Elipse time: 3.03 seconds
 
-CPU SAMPLES BEGIN (total = 446) Sun Dec 29 15:09:21 2013
+CPU SAMPLES BEGIN (total = 310) Fri Jan  3 16:09:24 2014
 rank   self  accum   count trace method
-   1 55.16% 55.16%     246 300103 org.opencv.imgproc.Imgproc.Canny_0
-   2 14.57% 69.73%      65 300101 org.opencv.highgui.VideoCapture.read_0
-   3 13.45% 83.18%      60 300102 org.opencv.imgproc.Imgproc.cvtColor_1
-   4  7.85% 91.03%      35 300105 org.opencv.imgproc.Imgproc.GaussianBlur_2
-   5  7.40% 98.43%      33 300104 org.opencv.core.Core.bitwise_and_0
-   6  0.45% 98.88%       2 300064 java.lang.ClassLoader$NativeLibrary.load
-   7  0.22% 99.10%       1 300035 java.lang.Class.forName0
-   8  0.22% 99.33%       1 300060 sun.misc.BASE64Decoder.<clinit>
-   9  0.22% 99.55%       1 300062 com.codeferm.opencv.Canny.<clinit>
-  10  0.22% 99.78%       1 300094 org.opencv.highgui.VideoCapture.VideoCapture_1
-  11  0.22% 100.00%       1 300100 com.codeferm.opencv.Canny.main
-CPU SAMPLES END 
+   1 40.32% 40.32%     125 300218 org.opencv.imgproc.Imgproc.Canny_0
+   2 22.58% 62.90%      70 300220 org.opencv.highgui.VideoWriter.write_0
+   3 10.00% 72.90%      31 300215 org.opencv.highgui.VideoCapture.read_0
+   4  9.03% 81.94%      28 300219 org.opencv.core.Core.bitwise_and_0
+   5  9.03% 90.97%      28 300221 org.opencv.imgproc.Imgproc.cvtColor_1
+   6  5.81% 96.77%      18 300222 org.opencv.imgproc.Imgproc.GaussianBlur_2
+   7  0.32% 97.10%       1 300016 sun.misc.Perf.createLong
+   8  0.32% 97.42%       1 300077 java.util.zip.ZipFile.open
+   9  0.32% 97.74%       1 300095 java.util.jar.JarVerifier.<init>
+  10  0.32% 98.06%       1 300102 java.lang.ClassLoader$NativeLibrary.load
+  11  0.32% 98.39%       1 300105 java.util.Arrays.copyOfRange
+  12  0.32% 98.71%       1 300163 sun.nio.fs.UnixNativeDispatcher.init
+  13  0.32% 99.03%       1 300212 sun.reflect.ReflectionFactory.newConstructorAccessor
+  14  0.32% 99.35%       1 300214 org.opencv.highgui.VideoCapture.VideoCapture_1
+  15  0.32% 99.68%       1 300216 java.util.Arrays.copyOfRange
+  16  0.32% 100.00%       1 300217 com.codeferm.opencv.Canny.main
+CPU SAMPLES END
 ```
 ### Python
 To run Python programs in Eclipse you need PyDev installed
@@ -116,25 +120,31 @@ To run Python programs in Eclipse you need PyDev installed
 
 `-m cProfile -s time` is used to profile.
 ```
-URL: ../../resources/traffic.mp4
-Resolution: 480 x 360
-923 frames
-Elapse time: 4.08 seconds
+Input file: ../../resources/traffic.mp4
+Output file: ../../output/canny-python.avi
+Resolution: 480x360
+919 frames
+Elapse time: 3.18 seconds
 
    Ordered by: internal time
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-      923    1.935    0.002    1.935    0.002 {cv2.Canny}
-      924    0.723    0.001    0.723    0.001 {method 'read' of 'cv2.VideoCapture' objects}
-      923    0.589    0.001    0.589    0.001 {cv2.cvtColor}
-      923    0.461    0.000    0.461    0.000 {cv2.bitwise_and}
-      923    0.326    0.000    0.326    0.000 {cv2.GaussianBlur}
-        1    0.178    0.178    4.349    4.349 Canny.py:6(<module>)
-        2    0.017    0.008    0.046    0.023 __init__.py:2(<module>)
-        1    0.009    0.009    0.009    0.009 {cv2.VideoCapture}
-        1    0.007    0.007    0.007    0.007 numeric.py:1(<module>)
-        1    0.007    0.007    0.007    0.007 linalg.py:10(<module>)
-      262    0.006    0.000    0.008    0.000 function_base.py:3178(add_newdoc)
+      919    1.231    0.001    1.231    0.001 {cv2.Canny}
+      919    0.932    0.001    0.932    0.001 {method 'write' of 'cv2.VideoWriter' objects}
+      920    0.375    0.000    0.375    0.000 {method 'read' of 'cv2.VideoCapture' objects}
+      919    0.230    0.000    0.230    0.000 {cv2.bitwise_and}
+      919    0.188    0.000    0.188    0.000 {cv2.cvtColor}
+      919    0.175    0.000    0.175    0.000 {cv2.GaussianBlur}
+        1    0.075    0.075    3.263    3.263 Canny.py:6(<module>)
+        1    0.007    0.007    0.007    0.007 {cv2.VideoCapture}
+      262    0.003    0.000    0.004    0.000 function_base.py:3181(add_newdoc)
+        2    0.003    0.001    0.012    0.006 __init__.py:2(<module>)
+        1    0.002    0.002    0.003    0.003 polynomial.py:48(<module>)
+        1    0.002    0.002    0.003    0.003 chebyshev.py:78(<module>)
+        1    0.002    0.002    0.003    0.003 hermite_e.py:50(<module>)
+        6    0.002    0.000    0.003    0.000 {method 'sub' of '_sre.SRE_Pattern' objects}
+        1    0.002    0.002    0.003    0.003 hermite.py:50(<module>)
+        1    0.002    0.002    0.003    0.003 legendre.py:74(<module>)
 ```
 ### FreeBSD License
 Copyright (c) Steven P. Goldsmith
