@@ -28,10 +28,10 @@ import org.opencv.objdetect.HOGDescriptor;
 
 /**
  * Histogram of Oriented Gradients ([Dalal2005]) object detector.
- *
- * args[0] = source file or will default to "../resources/walking.avi" if no
+ * 
+ * args[0] = source file or will default to "../resources/walking.mp4" if no
  * args passed.
- *
+ * 
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
@@ -59,9 +59,10 @@ public class PeopleDetect {
 
     /**
      * Create window, frame and set window to visible.
-     *
-     * args[0] = camera index, url or will default to "0" if no args passed.
-     *
+     * 
+     * args[0] = source file or will default to "../resources/walking.mp4" if no
+     * args passed.
+     * 
      * @param args
      *            String array of arguments.
      */
@@ -71,7 +72,7 @@ public class PeopleDetect {
         // Check how many arguments were passed in
         if (args.length == 0) {
             // If no arguments were passed then default to local file
-            url = "../resources/walking.avi";
+            url = "../resources/walking.mp4";
         } else {
             url = args[0];
         }
@@ -95,6 +96,8 @@ public class PeopleDetect {
                 videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);
         final Mat mat = new Mat();
         final HOGDescriptor hog = new HOGDescriptor();
+        final MatOfFloat descriptors = HOGDescriptor.getDefaultPeopleDetector();
+        hog.setSVMDetector(descriptors);
         // final HOGDescriptor hog = new HOGDescriptor(new Size(128, 64),
         // new Size(16, 16), new Size(8, 8), new Size(8, 8), 9, 0, -1, 0,
         // 0.2, false, 64);
@@ -102,27 +105,36 @@ public class PeopleDetect {
         final MatOfDouble foundWeights = new MatOfDouble();
         final Size winStride = new Size(8, 8);
         final Size padding = new Size(32, 32);
-        final MatOfFloat descriptors = HOGDescriptor.getDefaultPeopleDetector();
-        hog.setSVMDetector(descriptors);
+        final Point rectPoint1 = new Point();
+        final Point rectPoint2 = new Point();
+        final Point fontPoint = new Point();
         int frames = 0;
         int framesWithPeople = 0;
         final long startTime = System.currentTimeMillis();
         final Scalar rectColor = new Scalar(0, 255, 0);
+        final Scalar fontColor = new Scalar(255, 255, 255);
         while (videoCapture.read(mat)) {
             hog.detectMultiScale(mat, foundLocations, foundWeights, 0.0,
                     winStride, padding, 1.05, 2.0, false);
             if (foundLocations.rows() > 0) {
-                List<Double> weightList = foundWeights.toList();
                 framesWithPeople++;
+                List<Double> weightList = foundWeights.toList();
                 List<Rect> rectList = foundLocations.toList();
                 int i = 0;
                 for (Rect rect : rectList) {
-                    Core.rectangle(mat, new Point(rect.x, rect.y), new Point(
-                            rect.x + rect.width, rect.y + rect.height),
-                            rectColor, 2);
-                    Core.putText(mat, String.format("%1.2f",
-                            weightList.get(i++)), new Point(rect.x, rect.y-4),
-                            Highgui.CV_FONT_NORMAL, 0.6, rectColor, 2);
+                    rectPoint1.x = rect.x;
+                    rectPoint1.y = rect.y;
+                    rectPoint2.x = rect.x + rect.width;
+                    rectPoint2.y = rect.y + rect.height;
+                    // Draw rectangle around fond object
+                    Core.rectangle(mat, rectPoint1, rectPoint2, rectColor, 2);
+                    fontPoint.x = rect.x;
+                    fontPoint.y = rect.y - 4;
+                    // Print weight
+                    Core.putText(mat,
+                            String.format("%1.2f", weightList.get(i++)),
+                            fontPoint, Core.FONT_HERSHEY_PLAIN, 1.5, fontColor,
+                            2, Core.LINE_AA, false);
                 }
             }
             videoWriter.write(mat);

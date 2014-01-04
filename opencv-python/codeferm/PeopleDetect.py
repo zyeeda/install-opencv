@@ -9,7 +9,7 @@ import logging, sys, time, cv2, cv2.cv as cv
 
 """Histogram of Oriented Gradients ([Dalal2005]) object detector.
 
-sys.argv[1] = source file or will default to "../../resources/walking.avi" if no args passed.
+sys.argv[1] = source file or will default to "../../resources/walking.mp4" if no args passed.
 
 @author: sgoldsmith
 
@@ -25,7 +25,7 @@ logger.addHandler(handler)
 outputFile = "../../output/people-detect-python.avi"
 # If no args passed then default to internal file
 if len(sys.argv) < 2:
-    url = "../../resources/walking.avi"
+    url = "../../resources/walking.mp4"
 else:
     url = sys.argv[1]
 videoCapture = cv2.VideoCapture(url)
@@ -44,9 +44,16 @@ start = time.time()
 while not lastFrame:
     ret, image = videoCapture.read()
     if ret:
-        found, w = hog.detectMultiScale(image, winStride=(8, 8), padding=(32, 32), scale=1.05)
-        if len (found) > 0:
+        foundLocations, foundWeights = hog.detectMultiScale(image, winStride=(8, 8), padding=(32, 32), scale=1.05)
+        if len (foundLocations) > 0:
             framesWithPeople += 1
+            i = 0
+            for x, y, w, h in foundLocations:
+                # Draw rectangle around fond object
+                cv2.rectangle(image, (x, y), (x + w, y + h), (0,255,0),2)
+                # Print weight
+                cv2.putText(image, "%1.2f" % foundWeights[i], (x, y-4), cv2.FONT_HERSHEY_PLAIN, 1.5, (255,255,255), thickness=2, lineType=cv2.CV_AA)
+                i += 1
     else:
         lastFrame = True
     videoWriter.write(image)
