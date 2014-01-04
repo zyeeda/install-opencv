@@ -35,6 +35,9 @@ there's no swap partition created by default. To create a 1GB swap file use:
     * `mkswap tmpswap`
     * `swapon tmpswap`
     * `free`
+* On ARM WebM codec (libvpx) failed to build because due to "Requested CPU
+ 'cortex-a8' not supported by compiler" even though I tested it on a
+ Cortex-A9. For now the install script doesn't build WebM on ARM.
 * `git clone https://github.com/sgjava/install-opencv.git`
 * `cd install-opencv/scripts/ubuntu1204`
 * Edit config.sh and change OpenCV and Java versions as needed
@@ -117,7 +120,7 @@ rank   self  accum   count trace method
 CPU SAMPLES END
 ```
 ### Python
-To run Python programs in Eclipse you need PyDev installed
+To run Python programs in Eclipse you need [PyDev](http://pydev.org) installed.
 * Help, Install New Software..., Add..., Name: PyDev, Location: http://pydev.org/updates, OK, check PyDev, Next>, Next>, I accept the terms of the license agreement, Finish, Trust certificate, OK
 * Import [Eclipse project](https://github.com/sgjava/install-opencv/tree/master/opencv-python)
 

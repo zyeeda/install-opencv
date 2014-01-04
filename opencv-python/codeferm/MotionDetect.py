@@ -43,10 +43,14 @@ if len(sys.argv) < 2:
     url = "../../resources/traffic.mp4"
 else:
     url = sys.argv[1]
+outputFile = "../../output/motion-detect-python.avi"
 videoCapture = cv2.VideoCapture(url)
-logger.info("URL: %s" % url)
+logger.info("Input file: %s" % url)
+logger.info("Output file: %s" % outputFile)
 logger.info("Resolution: %dx%d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
                                videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
+videoWriter = cv2.VideoWriter(outputFile, cv.CV_FOURCC(*'DIVX'), videoCapture.get(cv.CV_CAP_PROP_FPS),
+                              (int(videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))), True)
 lastFrame = False
 frames = 0
 framesWithMotion = 0
@@ -76,8 +80,12 @@ while not lastFrame:
             movingAvgImg = numpy.float32(workImg)
         movementLocations = contours(grayImg)
         # Threshold trigger motion
-        if motionPercent > 2.0:
+        if motionPercent > 0.75:
             framesWithMotion += 1
+            for x, y, w, h in movementLocations:
+                # Draw rectangle around fond object
+                cv2.rectangle(image, (x, y), (x + w, y + h), (0,255,0),2)
+        videoWriter.write(image)
         frames += 1
     else:
         lastFrame = True
@@ -85,4 +93,4 @@ elapse = time.time() - start
 logger.info("%d frames, %d frames with motion" % (frames, framesWithMotion))
 logger.info("Elapse time: %4.2f seconds" % elapse)
 del videoCapture
-
+del videoWriter

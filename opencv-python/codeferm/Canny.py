@@ -22,12 +22,12 @@ formatter = logging.Formatter("%(asctime)s %(levelname)-8s %(module)s %(message)
 handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-outputFile = "../../output/canny-python.avi"
 # If no args passed then default to internal file
 if len(sys.argv) < 2:
     url = "../../resources/traffic.mp4"
 else:
     url = sys.argv[1]
+outputFile = "../../output/canny-python.avi"
 logger.info("Input file: %s" % url)
 logger.info("Output file: %s" % outputFile)
 videoCapture = cv2.VideoCapture(url)
