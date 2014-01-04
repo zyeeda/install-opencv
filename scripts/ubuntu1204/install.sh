@@ -183,18 +183,21 @@ make >> $logfile 2>&1
 checkinstall --pkgname=fdk-aac --pkgversion="$(date +%Y%m%d%H%M)-git" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install libvpx (VP8/VP9 video encoder and decoder)
-echo "\nInstalling libvpx (VP8/VP9 video encoder and decoder)...\n"
-echo "Installing libvpx (VP8/VP9 video encoder and decoder)...\n" >> $logfile 2>&1
-cd "$tmpdir"
-git clone --depth 1 "$libvpxurl"
-cd libvpx
-if [ $shared -eq 0 ]; then
-	./configure --disable-examples --disable-unit-tests >> $logfile 2>&1
-else
-	./configure --disable-examples --disable-unit-tests --enable-shared >> $logfile 2>&1
+# ARM build failed because Cortex A* wasn't supported
+if [ "$arch" != "armv7l" ]; then
+	echo "\nInstalling libvpx (VP8/VP9 video encoder and decoder)...\n"
+	echo "Installing libvpx (VP8/VP9 video encoder and decoder)...\n" >> $logfile 2>&1
+	cd "$tmpdir"
+	git clone --depth 1 "$libvpxurl"
+	cd libvpx
+	if [ $shared -eq 0 ]; then
+		./configure --disable-examples --disable-unit-tests >> $logfile 2>&1
+	else
+		./configure --disable-examples --disable-unit-tests --enable-shared >> $logfile 2>&1
+	fi
+	make >> $logfile 2>&1
+	checkinstall --pkgname=libvpx --pkgversion="1:$(date +%Y%m%d%H%M)-git" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 fi
-make >> $logfile 2>&1
-checkinstall --pkgname=libvpx --pkgversion="1:$(date +%Y%m%d%H%M)-git" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install libopus (Opus audio decoder and encoder)
 echo "\nInstalling libopus $opusver (Opus audio decoder and encoder)...\n"
@@ -214,10 +217,15 @@ echo "Installing ffmpeg...\n" >> $logfile 2>&1
 cd "$tmpdir"
 git clone "$ffmpegurl"
 cd ffmpeg
-if [ $shared -eq 0 ]; then
-	./configure --enable-gpl --enable-libass --enable-libfaac --enable-libfdk-aac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-librtmp --enable-libtheora --enable-libvorbis --enable-libvpx --enable-x11grab --enable-libx264 --enable-nonfree --enable-version3 >> $logfile 2>&1
+# ARM build without libvpx
+if [ "$arch" != "armv7l" ]; then
+	./configure --enable-gpl --enable-libass --enable-libfaac --enable-libfdk-aac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-librtmp --enable-libtheora --enable-libvorbis --enable-x11grab --enable-libx264 --enable-nonfree --enable-version3 --enable-shared >> $logfile 2>&1
 else
-	./configure --enable-gpl --enable-libass --enable-libfaac --enable-libfdk-aac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-librtmp --enable-libtheora --enable-libvorbis --enable-libvpx --enable-x11grab --enable-libx264 --enable-nonfree --enable-version3 --enable-shared >> $logfile 2>&1
+	if [ $shared -eq 0 ]; then
+		./configure --enable-gpl --enable-libass --enable-libfaac --enable-libfdk-aac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-librtmp --enable-libtheora --enable-libvorbis --enable-libvpx --enable-x11grab --enable-libx264 --enable-nonfree --enable-version3 >> $logfile 2>&1
+	else
+		./configure --enable-gpl --enable-libass --enable-libfaac --enable-libfdk-aac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-librtmp --enable-libtheora --enable-libvorbis --enable-libvpx --enable-x11grab --enable-libx264 --enable-nonfree --enable-version3 --enable-shared >> $logfile 2>&1
+	fi
 fi
 make >> $logfile 2>&1
 checkinstall --pkgname=ffmpeg --pkgversion="7:$(date +%Y%m%d%H%M)-git" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
