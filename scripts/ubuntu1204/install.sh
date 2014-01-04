@@ -218,7 +218,7 @@ cd "$tmpdir"
 git clone "$ffmpegurl"
 cd ffmpeg
 # ARM build without libvpx
-if [ "$arch" != "armv7l" ]; then
+if [ "$arch" = "armv7l" ]; then
 	./configure --enable-gpl --enable-libass --enable-libfaac --enable-libfdk-aac --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-librtmp --enable-libtheora --enable-libvorbis --enable-x11grab --enable-libx264 --enable-nonfree --enable-version3 --enable-shared >> $logfile 2>&1
 else
 	if [ $shared -eq 0 ]; then
