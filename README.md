@@ -80,11 +80,15 @@ To run Java programs in Eclipse you need add the OpenCV library.
 * Right click project, Properties, Java Build Path, Libraries, Add Library..., User Library, OpenCV, Finish, OK
 * Import [Eclipse project](https://github.com/sgjava/install-opencv/tree/master/opencv-java)
 
+To run compiled class (Canny for this example) from shell:
+* `cd /home/<username>/workspace/install-opencv/opencv-java`
+* `java -Djava.library.path=/home/<username>/opencv-2.4.x/build/lib -cp /home/<username>/opencv-2.4.x/build/bin/opencv-24x.jar:bin com.codeferm.opencv.Canny`
+
 #### Things to be aware of
 * There's no bindings generated for OpenCV's GPU module.
 * Missing VideoWriter (I fixed this by patching gen_java.py)
 * Constants are missing (These can by patched as well in the install script)
-* There's no imshow equivalent, so check out [CaptureUI](https://github.com/sgjava/install-opencv/blob/master/opencv-java/src/com/codeferm/opencv/CaptureUI.java) 
+* There's no imshow equivalent, so check out [CaptureUI](https://github.com/sgjava/install-opencv/blob/master/opencv-java/src/com/codeferm/opencv/CaptureUI.java)
 
 ![CaptureUI Java](images/captureui-java.png)
 
