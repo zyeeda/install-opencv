@@ -14,13 +14,17 @@ physical systems. I tried to make the defaults sane in config.sh.
 
 ### Provides
 * FFMPEG from source (x264, fdk-aac, libvpx, libopus)
+* OpenCV from source
 * Java 7 and Apache Ant
     * Patch gen_java.py to generate missing VideoWriter class and add some missing CV_CAP_PROP constants
     * FourCC class
     * CaptureUI Applet to view images/video since there's no imshow with the bindings
     * Example code
-* OpenCV from source
-
+* Java and Python examples
+    * Capture UI
+    * Motion detection
+    * People detection
+    
 ### Platforms Supported by Install OpenCV
 * Ubuntu 12.04.3 LTS x86_64
 * Ubuntu 12.04.3 LTS x86
