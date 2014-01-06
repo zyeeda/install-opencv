@@ -19,7 +19,6 @@ physical systems. I tried to make the defaults sane in config.sh.
     * Patch gen_java.py to generate missing VideoWriter class and add some missing CV_CAP_PROP constants
     * FourCC class
     * CaptureUI Applet to view images/video since there's no imshow with the bindings
-    * Example code
 * Java and Python examples
     * Capture UI
     * Motion detection
