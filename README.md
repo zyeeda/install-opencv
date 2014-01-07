@@ -77,6 +77,9 @@ checkinstall using `sudo dpkg -r packagename`. To upgrade OpenCV:
 * `cd /home/<username>/opencv-2.4.x/build`
 * `sudo make uninstall`
 * Download and extract new OpenCV archive to your home dir
+* Edit `/home/<username>/opencv-2.4.x/modules/java/generator/gen_java.py"
+    * Comment out "VideoWriter" in class_ignore_list
+    * Comment out constants in const_ignore_list as required
 * `cd /home/<username>/opencv-2.4.x`
 * `mkdir build`
 * `cd build`
