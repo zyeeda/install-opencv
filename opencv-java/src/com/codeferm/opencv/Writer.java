@@ -20,15 +20,15 @@ import org.opencv.highgui.VideoWriter;
 
 /**
  * Example of VideoWriter class.
- *
+ * 
  * args[0] = source file or will default to "../resources/traffic.mp4" if no
  * args passed.
- *
+ * 
  * The following codecs were tested using Gstreamer Opencv backend (FourCC
  * value):
- *
+ * 
  * Codec Container ===== ========= DIVX avi XVID avi
- *
+ * 
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
@@ -56,10 +56,10 @@ public final class Writer {
 
     /**
      * Main method.
-     *
+     * 
      * args[0] = source file or will default to "../resources/traffic.mp4" if no
      * args passed.
-     *
+     * 
      * @param args
      *            Arguments passed.
      */
@@ -79,9 +79,10 @@ public final class Writer {
             LogManager.getLogManager().readConfiguration(
                     Canny.class.getClassLoader().getResourceAsStream(
                             "logging.properties"));
-        } catch (SecurityException | IOException e1) {
-            e1.printStackTrace();
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
         }
+        logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
         logger.log(Level.INFO, String.format("Input file: %s", url));
         logger.log(Level.INFO, String.format("Output file: %s", outputFile));
         VideoCapture videoCapture = new VideoCapture(url);

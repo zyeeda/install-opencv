@@ -81,9 +81,10 @@ public class PeopleDetect {
             LogManager.getLogManager().readConfiguration(
                     Canny.class.getClassLoader().getResourceAsStream(
                             "logging.properties"));
-        } catch (SecurityException | IOException e1) {
-            e1.printStackTrace();
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
         }
+        logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
         logger.log(Level.INFO, String.format("Input file: %s", url));
         logger.log(Level.INFO, String.format("Output file: %s", outputFile));
         final VideoCapture videoCapture = new VideoCapture(url);

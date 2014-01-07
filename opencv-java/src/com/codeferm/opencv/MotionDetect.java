@@ -116,9 +116,10 @@ public class MotionDetect {
             LogManager.getLogManager().readConfiguration(
                     MotionDetect.class.getClassLoader().getResourceAsStream(
                             "logging.properties"));
-        } catch (SecurityException | IOException e1) {
-            e1.printStackTrace();
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
         }
+        logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
         logger.log(Level.INFO, String.format("Input file: %s", url));
         logger.log(Level.INFO, String.format("Output file: %s", outputFile));
         VideoCapture videoCapture = new VideoCapture(url);

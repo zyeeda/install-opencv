@@ -26,9 +26,9 @@ import org.opencv.imgproc.Imgproc;
 /**
  * A simple video capture applet. The Java bindings do not have an imshow
  * equivalent (highgui wrapper) yet.
- *
+ * 
  * args[0] = camera index, url or will default to "0" if no args passed.
- *
+ * 
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
@@ -70,7 +70,7 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * Initialize VideoCapture.
-     *
+     * 
      * @param url
      *            Camera URL.
      */
@@ -87,12 +87,13 @@ public final class CaptureUI extends Applet implements Runnable {
             LogManager.getLogManager().readConfiguration(
                     Canny.class.getClassLoader().getResourceAsStream(
                             "logging.properties"));
-        } catch (SecurityException | IOException e1) {
-            e1.printStackTrace();
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
         }
         frameSize = new Size(
                 (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
                 (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+        logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
         logger.log(Level.INFO, "Press [Esc] to exit");
         logger.log(Level.INFO, String.format("URL: %s", url));
         init();
@@ -100,7 +101,7 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * VideoCapture accessor.
-     *
+     * 
      * @return VideoCapture.
      */
     public VideoCapture getCap() {
@@ -109,7 +110,7 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * Frame size accessor.
-     *
+     * 
      * @return Frame size.
      */
     public Size getFrameSize() {
@@ -177,7 +178,7 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * Convert from Mat to BufferedImage.
-     *
+     * 
      * @param mat
      *            Mat array.
      */
@@ -207,9 +208,9 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * Create window, frame and set window to visible.
-     *
+     * 
      * args[0] = camera index, url or will default to "0" if no args passed.
-     *
+     * 
      * @param args
      *            String array of arguments.
      */
