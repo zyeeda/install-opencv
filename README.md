@@ -70,10 +70,21 @@ there's no swap partition created by default. To create a 1GB swap file use:
 * OpenCV home `/home/<username>/opencv-2.4.x`
 * Java and Python bindings `/home/<username>/opencv-2.4.x/build`
 
-#### Updates
+#### Upgrades
 Once you've built ffmpeg and OpenCV with this package you will only need to
 build OpenCV in the future. You can also remove any package installed with
-checkinstall using `sudo dpkg -r packagename`.
+checkinstall using `sudo dpkg -r packagename`. To upgrade OpenCV:
+* `cd /home/<username>/opencv-2.4.x/build`
+* `sudo make uninstall`
+* Download and extract new OpenCV archive to your home dir
+* `cd /home/<username>/opencv-2.4.x`
+* `mkdir build`
+* `cd build`
+* `cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON .. > install.log 2>&1`
+* `make -j8 >> install.log 2>&1`
+* `make install >> install.log 2>&1`
+* `echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf`
+* `ldconfig`
 
 ### Java
 To run Java programs in Eclipse you need add the OpenCV library.
