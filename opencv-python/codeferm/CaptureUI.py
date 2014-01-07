@@ -31,6 +31,7 @@ elif re.match(r"[-+]?\d+$", sys.argv[1]) is not None:
 else:
     url = sys.argv[1]
 videoCapture = cv2.VideoCapture(url)
+logger.info("OpenCV %s" % cv2.__version__)
 logger.info("Press [Esc] to exit")
 logger.info("URL: %s" % url)
 logger.info("Resolution: %dx%d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),

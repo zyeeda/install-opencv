@@ -28,6 +28,7 @@ if len(sys.argv) < 2:
 else:
     url = sys.argv[1]
 outputFile = "../../output/canny-python.avi"
+logger.info("OpenCV %s" % cv2.__version__)
 logger.info("Input file: %s" % url)
 logger.info("Output file: %s" % outputFile)
 videoCapture = cv2.VideoCapture(url)

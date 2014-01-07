@@ -45,6 +45,7 @@ else:
     url = sys.argv[1]
 outputFile = "../../output/motion-detect-python.avi"
 videoCapture = cv2.VideoCapture(url)
+logger.info("OpenCV %s" % cv2.__version__)
 logger.info("Input file: %s" % url)
 logger.info("Output file: %s" % outputFile)
 logger.info("Resolution: %dx%d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
