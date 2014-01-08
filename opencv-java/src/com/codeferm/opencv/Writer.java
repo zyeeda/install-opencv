@@ -65,7 +65,7 @@ public final class Writer {
      */
     public static void main(final String[] args) {
         String url = null;
-        final String outputFile = "../output/people-detect-java.avi";
+        final String outputFile = "../output/writer-java.avi";
         // Check how many arguments were passed in
         if (args.length == 0) {
             // If no arguments were passed then default to
