@@ -44,8 +44,8 @@ public class PeopleDetect {
     /**
      * Logger.
      */
-    private static final Logger logger = Logger
-            .getLogger(Canny.class.getName());
+    private static final Logger logger = Logger.getLogger(PeopleDetect.class
+            .getName());
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -79,7 +79,7 @@ public class PeopleDetect {
         // Custom logging properties via class loader
         try {
             LogManager.getLogManager().readConfiguration(
-                    Canny.class.getClassLoader().getResourceAsStream(
+                    PeopleDetect.class.getClassLoader().getResourceAsStream(
                             "logging.properties"));
         } catch (SecurityException | IOException e) {
             e.printStackTrace();

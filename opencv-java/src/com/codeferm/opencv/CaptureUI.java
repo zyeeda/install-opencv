@@ -85,7 +85,7 @@ public final class CaptureUI extends Applet implements Runnable {
         // Custom logging properties via class loader
         try {
             LogManager.getLogManager().readConfiguration(
-                    Canny.class.getClassLoader().getResourceAsStream(
+                    CaptureUI.class.getClassLoader().getResourceAsStream(
                             "logging.properties"));
         } catch (SecurityException | IOException e) {
             e.printStackTrace();

@@ -41,7 +41,7 @@ public final class Writer {
     /**
      * Logger.
      */
-    private static final Logger logger = Logger.getLogger(CaptureUI.class
+    private static final Logger logger = Logger.getLogger(Writer.class
             .getName());
     /* Load the OpenCV system library */
     static {
@@ -77,7 +77,7 @@ public final class Writer {
         // Custom logging properties via class loader
         try {
             LogManager.getLogManager().readConfiguration(
-                    Canny.class.getClassLoader().getResourceAsStream(
+                    Writer.class.getClassLoader().getResourceAsStream(
                             "logging.properties"));
         } catch (SecurityException | IOException e) {
             e.printStackTrace();
