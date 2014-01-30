@@ -85,7 +85,7 @@ while not lastFrame:
             framesWithMotion += 1
             for x, y, w, h in movementLocations:
                 # Draw rectangle around fond object
-                cv2.rectangle(image, (x, y), (x + w, y + h), (0,255,0),2)
+                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
         videoWriter.write(image)
         frames += 1
     else:

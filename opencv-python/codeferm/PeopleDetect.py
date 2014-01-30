@@ -51,9 +51,9 @@ while not lastFrame:
             i = 0
             for x, y, w, h in foundLocations:
                 # Draw rectangle around fond object
-                cv2.rectangle(image, (x, y), (x + w, y + h), (0,255,0),2)
+                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # Print weight
-                cv2.putText(image, "%1.2f" % foundWeights[i], (x, y-4), cv2.FONT_HERSHEY_PLAIN, 1.5, (255,255,255), thickness=2, lineType=cv2.CV_AA)
+                cv2.putText(image, "%1.2f" % foundWeights[i], (x, y - 4), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 255), thickness=2, lineType=cv2.CV_AA)
                 i += 1
     else:
         lastFrame = True
