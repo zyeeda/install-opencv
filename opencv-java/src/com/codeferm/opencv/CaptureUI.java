@@ -41,8 +41,10 @@ public final class CaptureUI extends Applet implements Runnable {
     /**
      * Logger.
      */
+    // CHECKSTYLE:OFF This is not a constant, so naming convenetion is correct
     private static final Logger logger = Logger.getLogger(CaptureUI.class
             .getName());
+    // CHECKSTYLE:ON
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -224,18 +226,24 @@ public final class CaptureUI extends Applet implements Runnable {
             url = args[0];
         }
         CaptureUI window = new CaptureUI(url);
-        window.start();
-        KeyEventFrame frame = new KeyEventFrame();
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(final WindowEvent e) {
-                System.exit(0);
-            }
-        });
-        frame.add(window);
-        // Set frame size based on image size
-        frame.setSize((int) window.getFrameSize().width,
-                (int) window.getFrameSize().height);
-        frame.setVisible(true);
+        // Deal with VideoCapture always returning True otherwise it will hang
+        // on VideoCapture.read()
+        if (window.frameSize.width > 0 && window.frameSize.height > 0) {
+            KeyEventFrame frame = new KeyEventFrame();
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(final WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            frame.add(window);
+            // Set frame size based on image size
+            frame.setSize((int) window.getFrameSize().width,
+                    (int) window.getFrameSize().height);
+            frame.setVisible(true);
+            window.start();
+        } else {
+            logger.log(Level.SEVERE, "Unable to open device");
+        }
     }
 }
