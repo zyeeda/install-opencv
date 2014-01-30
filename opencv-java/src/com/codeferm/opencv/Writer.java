@@ -27,7 +27,10 @@ import org.opencv.highgui.VideoWriter;
  * The following codecs were tested using Gstreamer Opencv backend (FourCC
  * value):
  * 
- * Codec Container ===== ========= DIVX avi XVID avi
+ * Codec Container
+ * ===== =========
+ * DIVX avi
+ * XVID avi
  * 
  * @author sgoldsmith
  * @version 1.0.0
@@ -41,8 +44,10 @@ public final class Writer {
     /**
      * Logger.
      */
+    // CHECKSTYLE:OFF This is not a constant, so naming convenetion is correct
     private static final Logger logger = Logger.getLogger(Writer.class
             .getName());
+    // CHECKSTYLE:ON
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);

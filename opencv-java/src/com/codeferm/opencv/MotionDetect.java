@@ -44,8 +44,10 @@ public class MotionDetect {
     /**
      * Logger.
      */
+    // CHECKSTYLE:OFF This is not a constant, so naming convenetion is correct
     private static final Logger logger = Logger.getLogger(MotionDetect.class
             .getName());
+    // CHECKSTYLE:ON
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
