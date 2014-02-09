@@ -206,6 +206,8 @@ public final class CaptureUI extends Applet implements Runnable {
     @Override
     public synchronized void update(final Graphics g) {
         g.drawImage(bufferedImage, 0, 0, this);
+        // Memory leak will occur without this call
+        g.dispose();
     }
 
     /**
