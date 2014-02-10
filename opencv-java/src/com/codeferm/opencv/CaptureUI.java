@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -21,7 +22,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
-import org.opencv.imgproc.Imgproc;
 
 /**
  * A simple video capture applet. The Java bindings do not have an imshow
@@ -60,7 +60,7 @@ public final class CaptureUI extends Applet implements Runnable {
     /**
      * Holds conversion from Mat to BufferedImage.
      */
-    private byte[] pixelBytes = null;
+    private final byte[] pixelBytes = null;
     /**
      * Applet drawing canvas.
      */
@@ -170,11 +170,6 @@ public final class CaptureUI extends Applet implements Runnable {
             } else {
                 break;
             }
-            try {
-                // You will max out at ~50 FPS
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-            }
         }
     }
 
@@ -185,29 +180,21 @@ public final class CaptureUI extends Applet implements Runnable {
      *            Mat array.
      */
     public void convert(final Mat mat) {
-        final Mat mat2 = new Mat();
-        int type = BufferedImage.TYPE_BYTE_GRAY;
-        // Color image
-        if (mat.channels() > 1) {
-            Imgproc.cvtColor(mat, mat2, Imgproc.COLOR_BGR2RGB);
-            type = BufferedImage.TYPE_3BYTE_BGR;
-        }
-        final int pixels = mat.channels() * mat.cols() * mat.rows();
-        // Create byte array if null or different length
-        if (pixelBytes == null || pixelBytes.length != pixels) {
-            pixelBytes = new byte[pixels];
-        }
-        mat2.get(0, 0, pixelBytes);
-        bufferedImage = new BufferedImage(mat.cols(), mat.rows(), type);
-        bufferedImage.getRaster().setDataElements(0, 0, mat.cols(), mat.rows(),
-                pixelBytes);
+        byte[] sourcePixels = new byte[mat.width() * mat.height()
+                * mat.channels()];
+        mat.get(0, 0, sourcePixels);
+        // Create new image and get reference to backing data
+        bufferedImage = new BufferedImage(mat.width(), mat.height(),
+                BufferedImage.TYPE_3BYTE_BGR);
+        byte[] targetPixels = ((DataBufferByte) bufferedImage.getRaster()
+                .getDataBuffer()).getData();
+        // Fast copy
+        System.arraycopy(sourcePixels, 0, targetPixels, 0, sourcePixels.length);
     }
 
     @Override
     public synchronized void update(final Graphics g) {
         g.drawImage(bufferedImage, 0, 0, this);
-        // Memory leak will occur without this call
-        g.dispose();
     }
 
     /**
