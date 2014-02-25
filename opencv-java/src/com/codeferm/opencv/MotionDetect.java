@@ -36,11 +36,7 @@ import org.opencv.imgproc.Imgproc;
  * @version 1.0.0
  * @since 1.0.0
  */
-public class MotionDetect {
-    /**
-     * Serializable class version number.
-     */
-    private static final long serialVersionUID = -3988850198352906350L;
+public final class MotionDetect {
     /**
      * Logger.
      */
