@@ -98,12 +98,12 @@ public final class PeopleDetect {
         VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(),
                 videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);
         final Mat mat = new Mat();
-        final HOGDescriptor hog = new HOGDescriptor();
-        final MatOfFloat descriptors = HOGDescriptor.getDefaultPeopleDetector();
-        hog.setSVMDetector(descriptors);
         // final HOGDescriptor hog = new HOGDescriptor(new Size(128, 64),
         // new Size(16, 16), new Size(8, 8), new Size(8, 8), 9, 0, -1, 0,
         // 0.2, false, 64);
+        final HOGDescriptor hog = new HOGDescriptor();
+        final MatOfFloat descriptors = HOGDescriptor.getDefaultPeopleDetector();
+        hog.setSVMDetector(descriptors);
         final MatOfRect foundLocations = new MatOfRect();
         final MatOfDouble foundWeights = new MatOfDouble();
         final Size winStride = new Size(8, 8);
