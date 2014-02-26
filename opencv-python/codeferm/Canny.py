@@ -7,7 +7,7 @@ sgoldsmith@codeferm.com
 
 import logging, sys, time, cv2, cv2.cv as cv
 
-"""Canny Edge Detection of video.
+"""Canny Edge Detector.
 
 sys.argv[1] = source file or will default to "../../resources/traffic.mp4" if no args passed.
 

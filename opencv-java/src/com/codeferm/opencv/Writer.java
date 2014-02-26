@@ -29,8 +29,8 @@ import org.opencv.highgui.VideoWriter;
  * 
  * Codec Container
  * ===== =========
- * DIVX avi
- * XVID avi
+ * DIVX  avi
+ * XVID  avi
  * 
  * @author sgoldsmith
  * @version 1.0.0

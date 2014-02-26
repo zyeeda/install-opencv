@@ -154,7 +154,9 @@ public final class MotionDetect {
             }
             // Generate moving average image
             Imgproc.accumulateWeighted(workImg, movingAvgImg, .03);
+            // Convert the scale of the moving average
             Core.convertScaleAbs(movingAvgImg, scaleImg);
+            // Subtract the work image frame from the scaled image average
             Core.absdiff(workImg, scaleImg, diffImg);
             // Convert the image to grayscale
             Imgproc.cvtColor(diffImg, gray, Imgproc.COLOR_BGR2GRAY);
@@ -189,5 +191,12 @@ public final class MotionDetect {
                 "%d frames, %d frames with motion", frames, framesWithMotion));
         logger.log(Level.INFO, String.format("Elipse time: %4.2f seconds",
                 (double) estimatedTime / 1000));
+        // Free native memory
+        mat.release();
+        workImg.release();
+        movingAvgImg.release();
+        gray.release();
+        diffImg.release();
+        scaleImg.release();
     }
 }

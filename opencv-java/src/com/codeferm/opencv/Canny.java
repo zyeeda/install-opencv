@@ -20,7 +20,7 @@ import org.opencv.highgui.VideoWriter;
 import org.opencv.imgproc.Imgproc;
 
 /**
- * Canny Edge Detection of video.
+ * Canny Edge Detector.
  * 
  * args[0] = source file or will default to "../resources/traffic.mp4" if no
  * args passed.
@@ -30,10 +30,6 @@ import org.opencv.imgproc.Imgproc;
  * @since 1.0.0
  */
 public class Canny {
-    /**
-     * Serializable class version number.
-     */
-    private static final long serialVersionUID = -3988850198352906350L;
     /**
      * Logger.
      */
@@ -114,5 +110,11 @@ public class Canny {
         logger.log(Level.INFO, String.format("%d frames", frames));
         logger.log(Level.INFO, String.format("Elipse time: %4.2f seconds",
                 (double) estimatedTime / 1000));
+        // Release native memory
+        mat.release();
+        gray.release();
+        blur.release();
+        edges.release();
+        dst.release();
     }
 }

@@ -148,5 +148,7 @@ public final class PeopleDetect {
                 "%d frames, %d frames with people", frames, framesWithPeople));
         logger.log(Level.INFO, String.format("Elipse time: %4.2f seconds",
                 (double) estimatedTime / 1000));
+        // Release native memory
+        mat.release();
     }
 }
