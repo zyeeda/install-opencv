@@ -63,12 +63,6 @@ public final class MotionDetect {
     private static final Point contourPoint = new Point(-1, -1);
 
     /**
-     * Private constructor prevents instantiation by untrusted callers.
-     */
-    private MotionDetect() {
-    }
-
-    /**
      * Get contours from image.
      * 
      * @param source

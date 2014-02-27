@@ -41,12 +41,6 @@ public class Canny {
     }
 
     /**
-     * Private constructor prevents instantiation by untrusted callers.
-     */
-    private Canny() {
-    }
-
-    /**
      * Create window, frame and set window to visible.
      * 
      * args[0] = source file or will default to "../resources/traffic.mp4" if no

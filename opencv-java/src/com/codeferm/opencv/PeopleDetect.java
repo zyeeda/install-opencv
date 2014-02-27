@@ -54,12 +54,6 @@ public final class PeopleDetect {
     }
 
     /**
-     * Private constructor prevents instantiation by untrusted callers.
-     */
-    private PeopleDetect() {
-    }
-
-    /**
      * Create window, frame and set window to visible.
      * 
      * args[0] = source file or will default to "../resources/walking.mp4" if no
