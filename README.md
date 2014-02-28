@@ -82,9 +82,11 @@ checkinstall using `sudo dpkg -r packagename`. To upgrade OpenCV:
     * Comment out constants in const_ignore_list as required
 * Edit /home/&lt;username&gt;/opencv-2.4.x/3rdparty/libjpeg/jdhuff.c
     * Comment out:
-        `if (cinfo->Ss != 0 || cinfo->Se != DCTSIZE2-1 ||`
-        `cinfo->Ah != 0 || cinfo->Al != 0)`
-      `WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);`
+      ```
+        if (cinfo->Ss != 0 || cinfo->Se != DCTSIZE2-1 ||
+        cinfo->Ah != 0 || cinfo->Al != 0)
+      WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);
+      ```
 * `cd /home/<username>/opencv-2.4.x`
 * `mkdir build`
 * `cd build`
