@@ -33,15 +33,15 @@ installjava="True"
 
 # Oracle JDK
 if [ $installjava = "True" ]; then
-	jdkurl="http://download.oracle.com/otn-pub/java/jdk/7u45-b18/"
-	jdkver="jdk1.7.0_45"
+	jdkurl="http://download.oracle.com/otn-pub/java/jdk/7u51-b13/"
+	jdkver="jdk1.7.0_51"
 	javahome=/usr/lib/jvm/jdk1.7.0
 	if [ "$arch" = "x86_64" ]; then
-		jdkarchive="jdk-7u45-linux-x64.tar.gz"
+		jdkarchive="jdk-7u51-linux-x64.tar.gz"
 	elif [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
-		jdkarchive="jdk-7u45-linux-i586.tar.gz"
+		jdkarchive="jdk-7u51-linux-i586.tar.gz"
 	elif [ "$arch" = "armv7l" ]; then
-		jdkarchive="jdk-7u45-linux-arm-vfp-hflt.tar.gz"
+		jdkarchive="jdk-7u51-linux-arm-vfp-hflt.tar.gz"
 	else
 		echo "\nNo supported architectures detected!"
 		exit 1
@@ -69,9 +69,9 @@ x264url="git://git.videolan.org/x264.git"
 fdkaccurl="git://github.com/mstorsjo/fdk-aac.git"
 
 # Opus
-opusurl="http://downloads.xiph.org/releases/opus/opus-1.0.3.tar.gz"
-opusarchive="opus-1.0.3.tar.gz"
-opusver="opus-1.0.3"
+opusurl="http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz"
+opusarchive="opus-1.1.tar.gz"
+opusver="opus-1.1"
 
 # libvpx
 libvpxurl="http://git.chromium.org/webm/libvpx.git"
