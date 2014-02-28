@@ -22,6 +22,9 @@ opencvver="2.4.7"
 # Relative path to gen_java.py
 genjava="/modules/java/generator/gen_java.py"
 
+# Relative path to jdhuff.c
+jdhuff="/3rdparty/libjpeg/jdhuff.c"
+
 # Temp dir
 tmpdir="$HOME/opencv-$opencvver-libs"
 

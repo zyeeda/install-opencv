@@ -270,13 +270,18 @@ sed -i 's/\"CV_CAP_PROP_FPS\",/'\#\"CV_CAP_PROP_FPS\",'/g' "$opencvhome$genjava"
 sed -i 's/\"CV_CAP_PROP_FOURCC\",/'\#\"CV_CAP_PROP_FOURCC\",'/g' "$opencvhome$genjava"
 sed -i 's/\"CV_CAP_PROP_FRAME_COUNT\",/'\#\"CV_CAP_PROP_FRAME_COUNT\",'/g' "$opencvhome$genjava"
 
+# Patch jdhuff.c to remove "Invalid SOS parameters for sequential JPEG" warning
+sed -i 's~if (cinfo->Ss~//if (cinfo->Ss~g' "$opencvhome$jdhuff"
+sed -i 's~cinfo->Ah~//cinfo->Ah~g' "$opencvhome$jdhuff"
+sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~g' "$opencvhome$jdhuff"
+
 # Compile OpenCV
 echo "\nCompile OpenCV..."
 echo "\nCompile OpenCV...\n" >> $logfile 2>&1
 cd "$opencvhome"
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON .. >> $logfile 2>&1
+cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON .. >> $logfile 2>&1
 make -j8 >> $logfile 2>&1
 make install >> $logfile 2>&1
 echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf
