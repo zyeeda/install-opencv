@@ -27,7 +27,10 @@ physical systems. I tried to make the defaults sane in config.sh.
 ### Platforms Supported by Install OpenCV
 * Ubuntu 12.04.3 LTS x86_64
 * Ubuntu 12.04.3 LTS x86
-* Ubuntu 12.10 armv7l (PicUntu 0.9 RC3)
+* Ubuntu 12.04.4 LTS armv7l
+* Ubuntu 14.04.0 LTS x86_64
+* Ubuntu 14.04.0 LTS x86
+* Ubuntu 14.04.0 LTS armv7l
 
 ### Build
 * On ARM platforms with limited memory create a swap file or the build may fail
@@ -42,7 +45,7 @@ there's no swap partition created by default. To create a 1GB swap file use:
  'cortex-a8' not supported by compiler" even though I tested it on a
  Cortex-A9. For now the install script doesn't build WebM on ARM.
 * `git clone https://github.com/sgjava/install-opencv.git`
-* `cd install-opencv/scripts/ubuntu1204`
+* `cd install-opencv/scripts/ubuntu`
 * Edit config.sh and change OpenCV and Java versions as needed
 * Run script in foreground or background
     * `sudo ./install.sh` to run script in foreground
