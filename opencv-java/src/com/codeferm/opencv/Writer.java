@@ -29,18 +29,14 @@ import org.opencv.highgui.VideoWriter;
  * 
  * Codec Container
  * ===== =========
- * DIVX  avi
- * XVID  avi
+ * DIVX avi
+ * XVID avi
  * 
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
  */
 public final class Writer {
-    /**
-     * Serializable class version number.
-     */
-    private static final long serialVersionUID = -3988850198352906350L;
     /**
      * Logger.
      */
@@ -51,12 +47,6 @@ public final class Writer {
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
-
-    /**
-     * Private constructor prevents instantiation by untrusted callers.
-     */
-    private Writer() {
     }
 
     /**

@@ -38,10 +38,6 @@ import org.opencv.objdetect.HOGDescriptor;
  */
 public final class PeopleDetect {
     /**
-     * Serializable class version number.
-     */
-    private static final long serialVersionUID = -3988850198352906351L;
-    /**
      * Logger.
      */
     // CHECKSTYLE:OFF This is not a constant, so naming convenetion is correct
