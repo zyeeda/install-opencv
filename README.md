@@ -77,8 +77,10 @@ there's no swap partition created by default. To create a 1GB swap file use:
 Once you've built ffmpeg and OpenCV with this package you will only need to
 build OpenCV in the future. You can also remove any package installed with
 checkinstall using `sudo dpkg -r packagename`. To upgrade OpenCV:
+* `sudo su -`
 * `cd /home/<username>/opencv-2.4.x/build`
-* `sudo make uninstall`
+* `make uninstall`
+* `exit`
 * Download and extract new OpenCV archive to your home dir
 * Edit /home/&lt;username&gt;/opencv-2.4.x/modules/java/generator/gen_java.py
     * Comment out "VideoWriter" in class_ignore_list
@@ -90,14 +92,15 @@ checkinstall using `sudo dpkg -r packagename`. To upgrade OpenCV:
     cinfo->Ah != 0 || cinfo->Al != 0)
       WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);
     ```
+* `sudo su -`
 * `cd /home/<username>/opencv-2.4.x`
 * `mkdir build`
 * `cd build`
-* `sudo cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON .. > install.log 2>&1`
-* `sudo make -j$(getconf _NPROCESSORS_ONLN) >> install.log 2>&1`
-* `sudo make install >> install.log 2>&1`
-* `sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'`
-* `sudo ldconfig`
+* `cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON .. > install.log 2>&1`
+* `make -j$(getconf _NPROCESSORS_ONLN) >> install.log 2>&1`
+* `make install >> install.log 2>&1`
+* `sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'`
+* `ldconfig`
 
 ### Java
 To run Java programs in Eclipse you need add the OpenCV library.
