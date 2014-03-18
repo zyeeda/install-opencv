@@ -106,7 +106,7 @@ checkinstall using `sudo dpkg -r packagename`. To upgrade OpenCV:
 To run Java programs in Eclipse you need add the OpenCV library.
 * Window, Preferences, Java, Build Path, User Libraries, New..., OpenCV, OK
 * Add External JARs..., /home/&lt;username&gt;/opencv-2.4.x/build-java/bin/opencv-24x.jar
-* Native library location, Edit..., External Folder..., /home/&lt;username&gt;/opencv-2.4.x/build-java/lib, OK
+* Native library location, Edit..., External Folder..., /home/&lt;username&gt;/opencv-2.4.x/build/lib, OK
 * Right click project, Properties, Java Build Path, Libraries, Add Library..., User Library, OpenCV, Finish, OK
 * Import [Eclipse project](https://github.com/sgjava/install-opencv/tree/master/opencv-java)
 
