@@ -94,7 +94,7 @@ checkinstall using `sudo dpkg -r packagename`. To upgrade OpenCV:
 * `mkdir build`
 * `cd build`
 * `sudo cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON .. > install.log 2>&1`
-* `sudo make -j$(getconf \_NPROCESSORS\_ONLN) >> install.log 2>&1`
+* `sudo make -j$(getconf _NPROCESSORS_ONLN) >> install.log 2>&1`
 * `sudo make install >> install.log 2>&1`
 * `sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'`
 * `sudo ldconfig`
