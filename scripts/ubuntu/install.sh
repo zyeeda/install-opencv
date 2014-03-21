@@ -36,7 +36,15 @@ starttime=$(date "$dateformat")
 starttimesec=$(date +%s)
 
 # Get user who ran sudo
-curuser=$(logname)
+if logname &> /dev/null; then
+	curuser=$(logname)
+else
+	if [ -n "$SUDO_USER" ]; then
+		curuser=$SUDO_USER
+	else
+		curuser=$(whoami)
+	fi
+fi
 
 # Get current directory
 curdir=$(cd `dirname $0` && pwd)
