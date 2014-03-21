@@ -4,12 +4,11 @@
 #
 # @author: sgoldsmith
 #
-# Install and configure OpenCV for Ubuntu 12.04.3 (Desktop/Server 
+# Install and configure OpenCV for Ubuntu 12.04.3 and 14.04.0 (Desktop/Server 
 # x86/x86_64 bit/armv7l). Please note that since some of the operations change
 # configurations, etc. I cannot guarantee it will work on future or previous
-# versions. All testing was performed on Ubuntu 12.04.3 LTS x86_64, x86 (Precise
-# Pangolin) and PicUntu 0.9 RC3 armv7l (based on Ubuntu 12.10 Quantal Quetzal)
-# with the latest updates applied.
+# versions. All testing was performed on Ubuntu 12.04.3 and 14.04.0 LTS x86_64,
+# x86 and armv7l with the latest updates applied.
 #
 # WARNING: This script has the ability to install/remove Ubuntu packages and it also
 # installs some libraries from source. This could potentially screw up your system,
@@ -21,8 +20,8 @@
 # 
 # Prerequisites:
 #
-# o Install Ubuntu 12.04.3, update (I used VirtualBox for testing) and make
-#   sure to select OpenSSH Server during install. Internet connection is
+# o Install Ubuntu 12.04.3 or 14.04.0, update (I used VirtualBox for testing) and
+#   make sure to select OpenSSH Server during install. Internet connection is
 #   required to download libraries, frameworks, etc.
 #    o sudo apt-get update
 #    o sudo apt-get upgrade
@@ -36,8 +35,8 @@ dateformat="+%a %b %-eth %Y %I:%M:%S %p %Z"
 starttime=$(date "$dateformat")
 starttimesec=$(date +%s)
 
-# Get current user
-curuser=$(who am i | awk '{print $1}')
+# Get user who ran sudo
+curuser=$(logname)
 
 # Get current directory
 curdir=$(cd `dirname $0` && pwd)
@@ -96,10 +95,10 @@ if [ $installjava = "True" ]; then
 		echo "Adding JAVA_HOME to /etc/environment"
 		echo "JAVA_HOME=$javahome" >> /etc/environment
 		. /etc/environment
-		echo "JAVA_HOME = $JAVA_HOME"
-		# Make sure root picks up JAVA_HOME for this process
-		export JAVA_HOME=$javahome
 	fi
+	# Make sure root picks up JAVA_HOME for this process
+	export JAVA_HOME=$javahome
+	echo "JAVA_HOME = $JAVA_HOME"
 	# Latest ANT without all the junk from apt-get install ant
 	echo "\nInstalling Ant $antver...\n"
 	echo "Installing Ant $antver...\n" >> $logfile 2>&1
