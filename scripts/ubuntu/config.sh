@@ -33,15 +33,15 @@ installjava="True"
 
 # Oracle JDK
 if [ $installjava = "True" ]; then
-	jdkurl="http://download.oracle.com/otn-pub/java/jdk/7u51-b13/"
-	jdkver="jdk1.7.0_51"
-	javahome=/usr/lib/jvm/jdk1.7.0
+	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8-b132/"
+	jdkver="jdk1.8.0"
+	javahome=/usr/lib/jvm/jdk1.8.0
 	if [ "$arch" = "x86_64" ]; then
-		jdkarchive="jdk-7u51-linux-x64.tar.gz"
+		jdkarchive="jdk-8-linux-x64.tar.gz"
 	elif [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
-		jdkarchive="jdk-7u51-linux-i586.tar.gz"
+		jdkarchive="jdk-8-linux-i586.tar.gz"
 	elif [ "$arch" = "armv7l" ]; then
-		jdkarchive="jdk-7u51-linux-arm-vfp-hflt.tar.gz"
+		jdkarchive="jdk-8-linux-arm-vfp-hflt.tar.gz"
 	else
 		echo "\nNo supported architectures detected!"
 		exit 1
