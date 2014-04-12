@@ -255,15 +255,21 @@ apt-get -y install patch subversion ruby librtmp0 librtmp-dev libfaac-dev libmp3
 # Install optional packages
 apt-get -y install libdc1394-utils libdc1394-22-dev libdc1394-22 libjpeg-dev libpng-dev libtiff-dev libjasper-dev >> $logfile 2>&1
 
+# Make sure unzip is installed
+apt-get -y install unzip
+
+# For 2.4.7 is a tar.gz and 2.4.8 is a zip, so I'll comment out the tar.gz stuff in case they switch back
 echo "Installing OpenCV $opencvver...\n"
 echo "\nInstalling OpenCV $opencvver..." >> $logfile 2>&1
-opencvarchive="opencv-$opencvver.tar.gz"
+#opencvarchive="opencv-$opencvver.tar.gz"
+opencvarchive="opencv-$opencvver.zip"
 opencvurl="http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$opencvver/$opencvarchive"
 opencvhome="$HOME/opencv-$opencvver"
 echo -n "Downloading $opencvurl to $tmpdir     "
 wget --directory-prefix=$tmpdir --timestamping --progress=dot "$opencvurl" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
 echo "\nExtracting $tmpdir/$opencvarchive to $tmpdir"
-tar -xf "$tmpdir/$opencvarchive" -C "$tmpdir"
+#tar -xf "$tmpdir/$opencvarchive" -C "$tmpdir"
+unzip "$tmpdir/$opencvarchive" -d "$tmpdir"
 echo "Removing $opencvhome"
 rm -rf "$opencvhome"
 echo "Moving $tmpdir/opencv-$opencvver to $opencvhome"
