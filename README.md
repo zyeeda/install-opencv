@@ -51,7 +51,7 @@ there's no swap partition created by default. To create a 1GB swap file use:
     * `sudo ./install.sh` to run script in foreground
     * `sudo sh -c 'nohup ./install.sh &'` to run script in background
 
-#### Build times
+#### Build times (Note not all make jobs run in parallel)
 * Acer AM3470G-UW10P Desktop
     * AMD A6-3620 quad core
     * 2.20GHz, 4MB Cache
@@ -61,11 +61,18 @@ there's no swap partition created by default. To create a 1GB swap file use:
     * ~45 minutes (depends on download times)
 * MK808 Google TV stick
     * Rockchip RK3066 dual core
-    * 1.6GHz Cortex-A9
+    * 1.6GHz Cortex-A9 (set to 1.2 GHz to control heat)
     * 1GB DDR3
     * 32GB SDHC Class 10
     * PicUntu 0.9 RC3
-    * ~4 hours (depends on download times)
+    * ~3 hours (depends on download times)
+* MK802IV Google TV stick
+    * Rockchip RK3188 quad core
+    * 1.6GHz Cortex-A9 (set to 1.2 GHz to control heat)
+    * 2GB DDR3
+    * 32GB SDHC Class 10
+    * Ubuntu 14.04
+    * ~2 hours (depends on download times)
 
 #### Build output
 * Check install.log output for any problems with the installation script.
