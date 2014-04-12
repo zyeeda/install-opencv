@@ -51,7 +51,7 @@ there's no swap partition created by default. To create a 1GB swap file use:
     * `sudo ./install.sh` to run script in foreground
     * `sudo sh -c 'nohup ./install.sh &'` to run script in background
 
-#### Build times (Note not all make jobs run in parallel)
+#### Build times (Note not all make build jobs run in parallel)
 * Acer AM3470G-UW10P Desktop
     * AMD A6-3620 quad core
     * 2.20GHz, 4MB Cache
