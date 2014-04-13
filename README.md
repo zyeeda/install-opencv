@@ -28,9 +28,9 @@ physical systems. I tried to make the defaults sane in config.sh.
 * Ubuntu 12.04.3 LTS x86_64
 * Ubuntu 12.04.3 LTS x86
 * Ubuntu 12.04.4 LTS armv7l
-* Ubuntu 14.04.0 LTS x86_64
-* Ubuntu 14.04.0 LTS x86
-* Ubuntu 14.04.0 LTS armv7l
+* Ubuntu 14.04.1 LTS x86_64
+* Ubuntu 14.04.1 LTS x86
+* Ubuntu 14.04.1 LTS armv7l
 
 ### Build
 * On ARM platforms with limited memory create a swap file or the build may fail
@@ -58,17 +58,17 @@ there's no swap partition created by default. To create a 1GB swap file use:
     * 8GB DIMM DDR3 Synchronous 1333 MHz
     * 500GB WDC WD5000AAKX-0 SATA 3 7200 RPM 16MB Cache
     * Ubuntu 12.04.3 LTS x86_64
-    * ~45 minutes (depends on download times)
-* MK808 Google TV stick
+    * ~30 minutes (depends on download times)
+* MK808 mini PC
     * Rockchip RK3066 dual core
-    * 1.6GHz Cortex-A9 (set to 1.2 GHz to control heat)
+    * 1.6GHz Cortex-A9 (set to 1.5 GHz)
     * 1GB DDR3
     * 32GB SDHC Class 10
-    * PicUntu 0.9 RC3
+    * Ubuntu 14.04
     * ~3 hours (depends on download times)
-* MK802IV Google TV stick
+* MK802IV mini PC
     * Rockchip RK3188 quad core
-    * 1.6GHz Cortex-A9 (set to 1.2 GHz to control heat)
+    * 1.6GHz Cortex-A9 (set to 1.2 GHz)
     * 2GB DDR3
     * 32GB SDHC Class 10
     * Ubuntu 14.04
