@@ -74,7 +74,7 @@ opusarchive="opus-1.1.tar.gz"
 opusver="opus-1.1"
 
 # libvpx
-libvpxurl="http://git.chromium.org/webm/libvpx.git"
+libvpxurl="https://git.chromium.org/git/webm/libvpx.git"
 
 # ffmpeg
 ffmpegurl="git://source.ffmpeg.org/ffmpeg.git"
