@@ -17,7 +17,7 @@ arch=$(uname -m)
 . /etc/lsb-release
 
 # OpenCV version
-opencvver="2.4.8"
+opencvver="2.4.9"
 
 # Relative path to gen_java.py
 genjava="/modules/java/generator/gen_java.py"
