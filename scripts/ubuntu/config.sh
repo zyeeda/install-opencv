@@ -34,7 +34,7 @@ installjava="True"
 # Oracle JDK
 if [ $installjava = "True" ]; then
 	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u5-b13/"
-	jdkver="jdk1.8.0"
+	jdkver="jdk1.8.0_05"
 	javahome=/usr/lib/jvm/jdk1.8.0
 	if [ "$arch" = "x86_64" ]; then
 		jdkarchive="jdk-8u5-linux-x64.tar.gz"
