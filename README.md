@@ -8,9 +8,10 @@ also included example source, so you can test the installation.
 ### WARNING
 
 This script has the ability to install/remove Ubuntu packages and it also
-installs some libraries from source. This could potentially screw up your system,
-so use with caution! I suggest using a VM for testing before using it on your
-physical systems. I tried to make the defaults sane in config.sh.
+installs some libraries from source. This could potentially screw up your system
+(if it's not a fresh install), so use with caution! I suggest using a VM for
+testing before using it on your physical systems. I tried to make the defaults
+sane in config.sh.
 
 ### Provides
 * FFMPEG from source (x264, fdk-aac, libvpx, libopus)
