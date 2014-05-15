@@ -48,8 +48,8 @@ if [ $installjava = "True" ]; then
 	fi
 	# Apache Ant
 	anturl="http://www.us.apache.org/dist/ant/binaries/"
-	antarchive="apache-ant-1.9.3-bin.tar.gz"
-	antver="apache-ant-1.9.3"
+	antarchive="apache-ant-1.9.4-bin.tar.gz"
+	antver="apache-ant-1.9.4"
 	anthome="/opt/ant"
 	antbin="/opt/ant/bin"
 fi
