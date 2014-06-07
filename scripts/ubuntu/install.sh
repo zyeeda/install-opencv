@@ -316,5 +316,5 @@ dm=$(((elapsedtimesec / 60) % 60))
 dh=$((elapsedtimesec / 3600))
 displaytime=$(printf "%02d:%02d:%02d" $dh $dm $ds)
 
-log "OpenCV home: $opencvhome" >> $logfile 2>&1
-log "Elapse time: $displaytime\n" >> $logfile 2>&1
+log "OpenCV home: $opencvhome" 
+log "Elapse time: $displaytime\n"
