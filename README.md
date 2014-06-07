@@ -16,6 +16,7 @@ sane in config.sh.
 ### Provides
 * FFMPEG from source (x264, fdk-aac, libvpx, libopus)
 * OpenCV from source
+    * Patch libjpeg to mute common warnings that will fill up the logs.
 * Java 8 and Apache Ant
     * Patch gen_java.py to generate missing VideoWriter class and add some missing CV_CAP_PROP constants
     * FourCC class
@@ -26,8 +27,8 @@ sane in config.sh.
     * People detection
     
 ### Platforms Supported by Install OpenCV
-* Ubuntu 12.04.3 LTS x86_64
-* Ubuntu 12.04.3 LTS x86
+* Ubuntu 12.04.4 LTS x86_64
+* Ubuntu 12.04.4 LTS x86
 * Ubuntu 12.04.4 LTS armv7l
 * Ubuntu 14.04.1 LTS x86_64
 * Ubuntu 14.04.1 LTS x86
@@ -99,6 +100,11 @@ checkinstall using `sudo dpkg -r packagename`. To upgrade OpenCV:
     if (cinfo->Ss != 0 || cinfo->Se != DCTSIZE2-1 ||
     cinfo->Ah != 0 || cinfo->Al != 0)
       WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);
+    ```
+* Edit /home/&lt;username&gt;/opencv-2.4.x/3rdparty/libjpeg/jdmarker.c
+    * Comment out (to remove "Corrupt JPEG data: xx extraneous bytes before marker 0xd9" warning):
+    ```
+    WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA, cinfo->marker->discarded_bytes, c);
     ```
 * `sudo su -`
 * `cd /home/<username>/opencv-2.4.x`
