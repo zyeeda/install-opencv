@@ -74,11 +74,11 @@ else
 fi
 
 # Simple logger
-function log {
+function log() {
 	timestamp=$(date +"%m-%d-%Y %k:%M:%S")
 	echo "$timestamp $1"
 	echo "$timestamp $1" > $logfile 2>&1
-} 
+}
 
 log "\nInstalling OpenCV $opencvver on Ubuntu $ubuntuver $arch...\n\nHost:   $hostname\nDomain: $domain\nUser:   $curuser\n"
 
