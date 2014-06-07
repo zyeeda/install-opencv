@@ -59,21 +59,21 @@ with an out of memory exception. To create a 1GB swap file use:
     * 8GB DIMM DDR3 Synchronous 1333 MHz
     * 500GB WDC WD5000AAKX-0 SATA 3 7200 RPM 16MB Cache
     * Ubuntu 12.04.3 LTS x86_64
-    * ~30 minutes (depends on download times)
+    * ~30 minutes (depends on download latency)
 * MK808 mini PC
     * Rockchip RK3066 dual core
     * 1.6GHz Cortex-A9 (set to 1.5 GHz)
     * 1GB DDR3
     * 32GB SDHC Class 10
     * Ubuntu 14.04
-    * ~3 hours (depends on download times)
+    * ~3 hours (depends on download latency)
 * MK802IV mini PC
     * Rockchip RK3188 quad core
     * 1.6GHz Cortex-A9 (set to 1.2 GHz)
     * 2GB DDR3
     * 32GB SDHC Class 10
     * Ubuntu 14.04
-    * ~2 hours (depends on download times)
+    * ~2 hours (depends on download latency)
 
 #### Build output
 * Check install.log output for any problems with the installation script.
