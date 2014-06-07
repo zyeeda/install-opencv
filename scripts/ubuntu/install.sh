@@ -282,6 +282,9 @@ sed -i 's~if (cinfo->Ss~//if (cinfo->Ss~g' "$opencvhome$jdhuff"
 sed -i 's~cinfo->Ah~//cinfo->Ah~g' "$opencvhome$jdhuff"
 sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~g' "$opencvhome$jdhuff"
 
+# Patch jdmarker.c to remove "Corrupt JPEG data: xx extraneous bytes before marker 0xd9" warning
+sed -i 's~WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~//WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~g' "$opencvhome$jdmarker"
+
 # Compile OpenCV
 log "\nCompile OpenCV..."
 cd "$opencvhome"

@@ -25,6 +25,9 @@ genjava="/modules/java/generator/gen_java.py"
 # Relative path to jdhuff.c
 jdhuff="/3rdparty/libjpeg/jdhuff.c"
 
+# Relative path to jdmarker.c
+jdmarker="/3rdparty/libjpeg/jdmarker.c"
+
 # Temp dir
 tmpdir="$HOME/opencv-$opencvver-libs"
 
