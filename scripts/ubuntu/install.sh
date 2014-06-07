@@ -74,7 +74,7 @@ else
 fi
 
 # Simple logger
-function log() {
+log(){
 	timestamp=$(date +"%m-%d-%Y %k:%M:%S")
 	echo "$timestamp $1"
 	echo "$timestamp $1" > $logfile 2>&1
