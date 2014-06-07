@@ -77,7 +77,7 @@ fi
 log(){
 	timestamp=$(date +"%m-%d-%Y %k:%M:%S")
 	echo "\n$timestamp $1"
-	echo "\n$timestamp $1" > $logfile 2>&1
+	echo "\n$timestamp $1" >> $logfile 2>&1
 }
 
 log "Installing OpenCV $opencvver on Ubuntu $ubuntuver $arch...\n\nHost:   $hostname\nDomain: $domain\nUser:   $curuser\n"
