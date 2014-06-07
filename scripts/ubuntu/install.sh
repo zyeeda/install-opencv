@@ -4,11 +4,11 @@
 #
 # @author: sgoldsmith
 #
-# Install and configure OpenCV for Ubuntu 12.04.3 and 14.04.0 (Desktop/Server 
+# Install and configure OpenCV for Ubuntu 12.04.4 and 14.04.0 (Desktop/Server 
 # x86/x86_64 bit/armv7l). Please note that since some of the operations change
 # configurations, etc. I cannot guarantee it will work on future or previous
-# versions. All testing was performed on Ubuntu 12.04.3 and 14.04.0 LTS x86_64,
-# x86 and armv7l with the latest updates applied.
+# versions of Ubuntu. All testing was performed on Ubuntu 12.04.4 and 14.04.0
+# LTS x86_64,x86 and armv7l with the latest updates applied.
 #
 # WARNING: This script has the ability to install/remove Ubuntu packages and it also
 # installs some libraries from source. This could potentially screw up your system,
@@ -20,7 +20,7 @@
 # 
 # Prerequisites:
 #
-# o Install Ubuntu 12.04.3 or 14.04.0, update (I used VirtualBox for testing) and
+# o Install Ubuntu 12.04.4 or 14.04.0, update (I used VirtualBox for testing) and
 #   make sure to select OpenSSH Server during install. Internet connection is
 #   required to download libraries, frameworks, etc.
 #    o sudo apt-get update
@@ -73,13 +73,18 @@ else
 	shared=1
 fi
 
-echo "\nInstalling OpenCV $opencvver on Ubuntu $ubuntuver $arch...\n\nHost:   $hostname\nDomain: $domain\nUser:   $curuser\n"
-echo "\nInstalling OpenCV $opencvver on Ubuntu $ubuntuver $arch...\n\nHost:   $hostname\nDomain: $domain\nUser:   $curuser\n" > $logfile 2>&1
+# Simple logger
+function log {
+	timestamp=$(date +"%m-%d-%Y %k:%M:%S")
+	echo "$timestamp $1"
+	echo "$timestamp $1" > $logfile 2>&1
+} 
+
+log "\nInstalling OpenCV $opencvver on Ubuntu $ubuntuver $arch...\n\nHost:   $hostname\nDomain: $domain\nUser:   $curuser\n"
 
 # Install Oracle Java JDK if installjava True
 if [ $installjava = "True" ]; then
-	echo "Installing Java $jdkver...\n"
-	echo "Installing Java $jdkver...\n" >> $logfile 2>&1
+	log "Installing Java $jdkver...\n"
 	echo -n "Downloading $jdkurl$jdkarchive to $tmpdir     "
 	wget --directory-prefix=$tmpdir --timestamping --progress=dot --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "$jdkurl$jdkarchive" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
 	echo "\nExtracting $tmpdir/$jdkarchive to $tmpdir"
@@ -108,8 +113,7 @@ if [ $installjava = "True" ]; then
 	export JAVA_HOME=$javahome
 	echo "JAVA_HOME = $JAVA_HOME"
 	# Latest ANT without all the junk from apt-get install ant
-	echo "\nInstalling Ant $antver...\n"
-	echo "Installing Ant $antver...\n" >> $logfile 2>&1
+	log "\nInstalling Ant $antver...\n"
 	echo -n "Downloading $anturl$antarchive to $tmpdir     "
 	wget --directory-prefix=$tmpdir --timestamping --progress=dot "$anturl$antarchive" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
 	echo "\nExtracting $tmpdir/$antarchive to $tmpdir"
@@ -137,20 +141,17 @@ fi
 
 # Remove existing ffmpeg, x264, and other dependencies (this removes a lot of other dependencies)
 if [ $removelibs = "True" ]; then
-	echo "\nRemoving any pre-installed ffmpeg, x264, and other dependencies...\n"
-	echo "Removing any pre-installed ffmpeg, x264, and other dependencies...\n" >> $logfile 2>&1
+	log "\nRemoving any pre-installed ffmpeg, x264, and other dependencies...\n"
 	apt-get -y remove ffmpeg x264 libx264-dev libvpx-dev libopencv-dev >> $logfile 2>&1
 	apt-get -y update >> $logfile 2>&1
 fi
 
 # Install build dependenices
-echo "\nInstalling build dependenices..."
-echo "Installing build dependenices...\n" >> $logfile 2>&1
+log "\nInstalling build dependenices..."
 apt-get -y install autoconf build-essential checkinstall cmake git libass-dev libfaac-dev libgpac-dev libjack-jackd2-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev librtmp-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libx11-dev libxext-dev libxfixes-dev pkg-config texi2html zlib1g-dev >> $logfile 2>&1
 
 # Install yasm
-echo "\nInstalling yasm $yasmver...\n"
-echo "\nInstalling yasm $yasmver...\n" >> $logfile 2>&1
+log "\nInstalling yasm $yasmver...\n"
 echo -n "Downloading $yasmurl to $tmpdir     "
 wget --directory-prefix=$tmpdir --timestamping --progress=dot "$yasmurl" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
 echo "\nExtracting $tmpdir/$yasmarchive to $tmpdir"
@@ -161,8 +162,7 @@ make >> $logfile 2>&1
 checkinstall --pkgname=yasm --pkgversion="1.2.0" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install x264
-echo "\nInstalling x264...\n"
-echo "Installing x264...\n" >> $logfile 2>&1
+log "\nInstalling x264...\n"
 cd "$tmpdir"
 git clone "$x264url"
 cd "x264"
@@ -175,8 +175,7 @@ make >> $logfile 2>&1
 checkinstall --pkgname=x264 --pkgversion="3:$(./version.sh | awk -F'[" ]' '/POINT/{print $4"+git"$5}')" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install fdk-aac
-echo "\nInstalling fdk-aac (AAC audio encoder)...\n"
-echo "Installing fdk-aac (AAC audio encoder)...\n" >> $logfile 2>&1
+log "\nInstalling fdk-aac (AAC audio encoder)...\n"
 cd "$tmpdir"
 git clone --depth 1 "$fdkaccurl"
 cd "fdk-aac"
@@ -192,8 +191,7 @@ checkinstall --pkgname=fdk-aac --pkgversion="$(date +%Y%m%d%H%M)-git" --backup=n
 # Install libvpx (VP8/VP9 video encoder and decoder)
 # ARM build failed because Cortex A* wasn't supported
 if [ "$arch" != "armv7l" ]; then
-	echo "\nInstalling libvpx (VP8/VP9 video encoder and decoder)...\n"
-	echo "Installing libvpx (VP8/VP9 video encoder and decoder)...\n" >> $logfile 2>&1
+	log "\nInstalling libvpx (VP8/VP9 video encoder and decoder)...\n"
 	cd "$tmpdir"
 	git clone --depth 1 "$libvpxurl"
 	cd libvpx
@@ -207,8 +205,7 @@ if [ "$arch" != "armv7l" ]; then
 fi
 
 # Install libopus (Opus audio decoder and encoder)
-echo "\nInstalling libopus $opusver (Opus audio decoder and encoder)...\n"
-echo "Installing libopus $opusver (Opus audio decoder and encoder)...\n" >> $logfile 2>&1
+log "\nInstalling libopus $opusver (Opus audio decoder and encoder)...\n"
 echo -n "Downloading $opusurl to $tmpdir     "
 wget --directory-prefix=$tmpdir --timestamping --progress=dot "$opusurl" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
 echo "\nExtracting $tmpdir/$opusarchive to $tmpdir"
@@ -219,8 +216,7 @@ make >> $logfile 2>&1
 checkinstall --pkgname=libopus --pkgversion="$(date +%Y%m%d%H%M)-git" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install ffmpeg
-echo "\nInstalling ffmpeg...\n"
-echo "Installing ffmpeg...\n" >> $logfile 2>&1
+log "\nInstalling ffmpeg...\n"
 cd "$tmpdir"
 git clone "$ffmpegurl"
 cd ffmpeg
@@ -238,8 +234,7 @@ make >> $logfile 2>&1
 checkinstall --pkgname=ffmpeg --pkgversion="7:$(date +%Y%m%d%H%M)-git" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 hash -r >> $logfile 2>&1
 
-echo "\nInstalling OpenCV dependenices...\n"
-echo "Installing OpenCV dependenices...\n" >> $logfile 2>&1
+log "\nInstalling OpenCV dependenices...\n"
 # Install Image I/O libraries 
 apt-get -y install libtiff4-dev libjpeg-dev libjasper-dev >> $logfile 2>&1
 # Install Video I/O libraries, support for Firewire video cameras and video streaming libraries
@@ -259,8 +254,7 @@ apt-get -y install libdc1394-utils libdc1394-22-dev libdc1394-22 libjpeg-dev lib
 apt-get -y install unzip
 
 # For 2.4.7 is a tar.gz and 2.4.8 is a zip, so I'll comment out the tar.gz stuff in case they switch back
-echo "Installing OpenCV $opencvver...\n"
-echo "\nInstalling OpenCV $opencvver..." >> $logfile 2>&1
+log "Installing OpenCV $opencvver...\n"
 #opencvarchive="opencv-$opencvver.tar.gz"
 opencvarchive="opencv-$opencvver.zip"
 opencvurl="http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$opencvver/$opencvarchive"
@@ -289,8 +283,7 @@ sed -i 's~cinfo->Ah~//cinfo->Ah~g' "$opencvhome$jdhuff"
 sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~g' "$opencvhome$jdhuff"
 
 # Compile OpenCV
-echo "\nCompile OpenCV..."
-echo "\nCompile OpenCV...\n" >> $logfile 2>&1
+log "\nCompile OpenCV..."
 cd "$opencvhome"
 mkdir build
 cd build
@@ -320,5 +313,5 @@ dm=$(((elapsedtimesec / 60) % 60))
 dh=$((elapsedtimesec / 3600))
 displaytime=$(printf "%02d:%02d:%02d" $dh $dm $ds)
 
-echo "\nOpenCV home: $opencvhome" >> $logfile 2>&1
-echo "\nElapse time: $displaytime\n" >> $logfile 2>&1
+log "\nOpenCV home: $opencvhome" >> $logfile 2>&1
+log "\nElapse time: $displaytime\n" >> $logfile 2>&1
