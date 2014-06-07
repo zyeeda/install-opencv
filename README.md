@@ -36,8 +36,7 @@ sane in config.sh.
 
 ### Build
 * On ARM platforms with limited memory create a swap file or the build may fail
-with an out of memory exception. This is the case with PicUntu 0.9 RC3 since
-there's no swap partition created by default. To create a 1GB swap file use:
+with an out of memory exception. To create a 1GB swap file use:
     * `sudo su -`
     * `dd if=/dev/zero of=tmpswap bs=1024 count=1M`
     * `mkswap tmpswap`
