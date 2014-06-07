@@ -76,11 +76,11 @@ fi
 # Simple logger
 log(){
 	timestamp=$(date +"%m-%d-%Y %k:%M:%S")
-	echo "$timestamp $1"
-	echo "$timestamp $1" > $logfile 2>&1
+	echo "\n$timestamp $1"
+	echo "\n$timestamp $1" > $logfile 2>&1
 }
 
-log "\nInstalling OpenCV $opencvver on Ubuntu $ubuntuver $arch...\n\nHost:   $hostname\nDomain: $domain\nUser:   $curuser\n"
+log "Installing OpenCV $opencvver on Ubuntu $ubuntuver $arch...\n\nHost:   $hostname\nDomain: $domain\nUser:   $curuser\n"
 
 # Install Oracle Java JDK if installjava True
 if [ $installjava = "True" ]; then
@@ -113,7 +113,7 @@ if [ $installjava = "True" ]; then
 	export JAVA_HOME=$javahome
 	echo "JAVA_HOME = $JAVA_HOME"
 	# Latest ANT without all the junk from apt-get install ant
-	log "\nInstalling Ant $antver...\n"
+	log "Installing Ant $antver...\n"
 	echo -n "Downloading $anturl$antarchive to $tmpdir     "
 	wget --directory-prefix=$tmpdir --timestamping --progress=dot "$anturl$antarchive" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
 	echo "\nExtracting $tmpdir/$antarchive to $tmpdir"
@@ -141,17 +141,17 @@ fi
 
 # Remove existing ffmpeg, x264, and other dependencies (this removes a lot of other dependencies)
 if [ $removelibs = "True" ]; then
-	log "\nRemoving any pre-installed ffmpeg, x264, and other dependencies...\n"
+	log "Removing any pre-installed ffmpeg, x264, and other dependencies...\n"
 	apt-get -y remove ffmpeg x264 libx264-dev libvpx-dev libopencv-dev >> $logfile 2>&1
 	apt-get -y update >> $logfile 2>&1
 fi
 
 # Install build dependenices
-log "\nInstalling build dependenices..."
+log "Installing build dependenices..."
 apt-get -y install autoconf build-essential checkinstall cmake git libass-dev libfaac-dev libgpac-dev libjack-jackd2-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev librtmp-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libx11-dev libxext-dev libxfixes-dev pkg-config texi2html zlib1g-dev >> $logfile 2>&1
 
 # Install yasm
-log "\nInstalling yasm $yasmver...\n"
+log "Installing yasm $yasmver...\n"
 echo -n "Downloading $yasmurl to $tmpdir     "
 wget --directory-prefix=$tmpdir --timestamping --progress=dot "$yasmurl" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
 echo "\nExtracting $tmpdir/$yasmarchive to $tmpdir"
@@ -162,7 +162,7 @@ make >> $logfile 2>&1
 checkinstall --pkgname=yasm --pkgversion="1.2.0" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install x264
-log "\nInstalling x264...\n"
+log "Installing x264...\n"
 cd "$tmpdir"
 git clone "$x264url"
 cd "x264"
@@ -175,7 +175,7 @@ make >> $logfile 2>&1
 checkinstall --pkgname=x264 --pkgversion="3:$(./version.sh | awk -F'[" ]' '/POINT/{print $4"+git"$5}')" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install fdk-aac
-log "\nInstalling fdk-aac (AAC audio encoder)...\n"
+log "Installing fdk-aac (AAC audio encoder)...\n"
 cd "$tmpdir"
 git clone --depth 1 "$fdkaccurl"
 cd "fdk-aac"
@@ -191,7 +191,7 @@ checkinstall --pkgname=fdk-aac --pkgversion="$(date +%Y%m%d%H%M)-git" --backup=n
 # Install libvpx (VP8/VP9 video encoder and decoder)
 # ARM build failed because Cortex A* wasn't supported
 if [ "$arch" != "armv7l" ]; then
-	log "\nInstalling libvpx (VP8/VP9 video encoder and decoder)...\n"
+	log "Installing libvpx (VP8/VP9 video encoder and decoder)...\n"
 	cd "$tmpdir"
 	git clone --depth 1 "$libvpxurl"
 	cd libvpx
@@ -205,7 +205,7 @@ if [ "$arch" != "armv7l" ]; then
 fi
 
 # Install libopus (Opus audio decoder and encoder)
-log "\nInstalling libopus $opusver (Opus audio decoder and encoder)...\n"
+log "Installing libopus $opusver (Opus audio decoder and encoder)...\n"
 echo -n "Downloading $opusurl to $tmpdir     "
 wget --directory-prefix=$tmpdir --timestamping --progress=dot "$opusurl" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
 echo "\nExtracting $tmpdir/$opusarchive to $tmpdir"
@@ -216,7 +216,7 @@ make >> $logfile 2>&1
 checkinstall --pkgname=libopus --pkgversion="$(date +%Y%m%d%H%M)-git" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install ffmpeg
-log "\nInstalling ffmpeg...\n"
+log "Installing ffmpeg...\n"
 cd "$tmpdir"
 git clone "$ffmpegurl"
 cd ffmpeg
@@ -234,7 +234,7 @@ make >> $logfile 2>&1
 checkinstall --pkgname=ffmpeg --pkgversion="7:$(date +%Y%m%d%H%M)-git" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 hash -r >> $logfile 2>&1
 
-log "\nInstalling OpenCV dependenices...\n"
+log "Installing OpenCV dependenices...\n"
 # Install Image I/O libraries 
 apt-get -y install libtiff4-dev libjpeg-dev libjasper-dev >> $logfile 2>&1
 # Install Video I/O libraries, support for Firewire video cameras and video streaming libraries
@@ -286,7 +286,7 @@ sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~
 sed -i 's~WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~//WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~g' "$opencvhome$jdmarker"
 
 # Compile OpenCV
-log "\nCompile OpenCV..."
+log "Compile OpenCV..."
 cd "$opencvhome"
 mkdir build
 cd build
@@ -316,5 +316,5 @@ dm=$(((elapsedtimesec / 60) % 60))
 dh=$((elapsedtimesec / 3600))
 displaytime=$(printf "%02d:%02d:%02d" $dh $dm $ds)
 
-log "\nOpenCV home: $opencvhome" >> $logfile 2>&1
-log "\nElapse time: $displaytime\n" >> $logfile 2>&1
+log "OpenCV home: $opencvhome" >> $logfile 2>&1
+log "Elapse time: $displaytime\n" >> $logfile 2>&1
