@@ -151,6 +151,8 @@ log "Installing build dependenices..."
 apt-get -y install autoconf build-essential checkinstall cmake git libass-dev libfaac-dev libgpac-dev libjack-jackd2-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev librtmp-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libx11-dev libxext-dev libxfixes-dev pkg-config texi2html zlib1g-dev >> $logfile 2>&1
 
 # Install yasm
+log "Removing yasm $yasmver...\n"
+dpkg -r yasm
 log "Installing yasm $yasmver...\n"
 echo -n "Downloading $yasmurl to $tmpdir     "
 wget --directory-prefix=$tmpdir --timestamping --progress=dot "$yasmurl" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
@@ -162,6 +164,8 @@ make >> $logfile 2>&1
 checkinstall --pkgname=yasm --pkgversion="1.2.0" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install x264
+log "Removing x264...\n"
+dpkg -r x264
 log "Installing x264...\n"
 cd "$tmpdir"
 git clone "$x264url"
@@ -175,6 +179,8 @@ make >> $logfile 2>&1
 checkinstall --pkgname=x264 --pkgversion="3:$(./version.sh | awk -F'[" ]' '/POINT/{print $4"+git"$5}')" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install fdk-aac
+log "Removing fdk-aac (AAC audio encoder)...\n"
+dpkg -r fdk-aac
 log "Installing fdk-aac (AAC audio encoder)...\n"
 cd "$tmpdir"
 git clone --depth 1 "$fdkaccurl"
@@ -191,6 +197,8 @@ checkinstall --pkgname=fdk-aac --pkgversion="$(date +%Y%m%d%H%M)-git" --backup=n
 # Install libvpx (VP8/VP9 video encoder and decoder)
 # ARM build failed because Cortex A* wasn't supported
 if [ "$arch" != "armv7l" ]; then
+	log "Removing libvpx (VP8/VP9 video encoder and decoder)...\n"
+	dpkg -r libvpx	
 	log "Installing libvpx (VP8/VP9 video encoder and decoder)...\n"
 	cd "$tmpdir"
 	git clone --depth 1 "$libvpxurl"
@@ -205,6 +213,8 @@ if [ "$arch" != "armv7l" ]; then
 fi
 
 # Install libopus (Opus audio decoder and encoder)
+log "Removing libopus $opusver (Opus audio decoder and encoder)...\n"
+dpkg -r libopus
 log "Installing libopus $opusver (Opus audio decoder and encoder)...\n"
 echo -n "Downloading $opusurl to $tmpdir     "
 wget --directory-prefix=$tmpdir --timestamping --progress=dot "$opusurl" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
@@ -216,6 +226,8 @@ make >> $logfile 2>&1
 checkinstall --pkgname=libopus --pkgversion="$(date +%Y%m%d%H%M)-git" --backup=no --deldoc=yes --fstrans=no --default >> $logfile 2>&1
 
 # Install ffmpeg
+log "Removing ffmpeg...\n"
+dpkg -r ffmpeg
 log "Installing ffmpeg...\n"
 cd "$tmpdir"
 git clone "$ffmpegurl"

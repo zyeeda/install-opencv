@@ -82,41 +82,12 @@ with an out of memory exception. To create a 1GB swap file use:
 * Java and Python bindings `/home/<username>/opencv-2.4.x/build`
 
 #### Upgrades
-Once you've built ffmpeg and OpenCV with this package you will only need to
-build OpenCV in the future. You can also remove any package installed with
-checkinstall using `sudo dpkg -r packagename`. To upgrade OpenCV:
+The install script will remove the previously installed packages with `dpkg -r`.
+To upgrade OpenCV follow the build instructions:
 * `sudo su -`
 * `cd /home/<username>/opencv-2.4.x/build`
 * `make uninstall`
 * `exit`
-* Download and extract new OpenCV archive to your home dir
-* Edit /home/&lt;username&gt;/opencv-2.4.x/modules/java/generator/gen_java.py
-    * Comment out "VideoWriter" in class_ignore_list
-    * Comment out constants in const_ignore_list as required
-* Edit /home/&lt;username&gt;/opencv-2.4.x/3rdparty/libjpeg/jdhuff.c
-    * Comment out (to remove "Invalid SOS parameters for sequential JPEG" warning):
-    ```
-    if (cinfo->Ss != 0 || cinfo->Se != DCTSIZE2-1 ||
-    cinfo->Ah != 0 || cinfo->Al != 0)
-      WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);
-    ```
-* Edit /home/&lt;username&gt;/opencv-2.4.x/3rdparty/libjpeg/jdmarker.c
-    * Comment out (to remove "Corrupt JPEG data: xx extraneous bytes before marker 0xd9" warning):
-    ```
-    WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA, cinfo->marker->discarded_bytes, c);
-    ```
-* `sudo su -`
-* `cd /home/<username>/opencv-2.4.x`
-* `mkdir build`
-* `cd build`
-* On X86_64 and X86
-    * `cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON .. > install.log 2>&1`
-* On multi-core ARM
-    * `cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DBUILD_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON -DENABLE_VFPV3=ON -DENABLE_NEON=ON .. > install.log 2>&1`
-* `make -j$(getconf _NPROCESSORS_ONLN) >> install.log 2>&1`
-* `make install >> install.log 2>&1`
-* `sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'`
-* `ldconfig`
 
 ### Java
 To run Java programs in Eclipse you need add the OpenCV library.
