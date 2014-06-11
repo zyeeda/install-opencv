@@ -83,7 +83,7 @@ with an out of memory exception. To create a 1GB swap file use:
 
 #### Upgrades
 The install script will remove the previously installed packages with `dpkg -r`.
-To upgrade OpenCV follow the build instructions:
+To upgrade OpenCV follow the build instructions after doing:
 * `sudo su -`
 * `cd /home/<username>/opencv-2.4.x/build`
 * `make uninstall`
