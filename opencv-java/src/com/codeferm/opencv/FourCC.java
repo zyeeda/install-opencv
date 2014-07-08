@@ -33,6 +33,7 @@ final class FourCC {
         if (fourcc == null) {
             throw new NullPointerException("FourCC cannot be null");
         }
+        // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
         if (fourcc.length() != 4) {
             throw new IllegalArgumentException(
                     "FourCC must be four characters long");
@@ -48,6 +49,7 @@ final class FourCC {
             val <<= 8;
             val |= fourcc.charAt(i);
         }
+        // CHECKSTYLE:ON MagicNumber
         this.value = val;
     }
 
@@ -63,10 +65,12 @@ final class FourCC {
     @Override
     public String toString() {
         String s = "";
+        // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
         s += (char) ((value >> 24) & 0xFF);
         s += (char) ((value >> 16) & 0xFF);
         s += (char) ((value >> 8) & 0xFF);
         s += (char) (value & 0xFF);
+        // CHECKSTYLE:ON MagicNumber
         return s;
     }
 }

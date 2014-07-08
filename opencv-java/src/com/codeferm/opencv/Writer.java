@@ -20,41 +20,45 @@ import org.opencv.highgui.VideoWriter;
 
 /**
  * Example of VideoWriter class.
- * 
+ *
  * args[0] = source file or will default to "../resources/traffic.mp4" if no
  * args passed.
- * 
- * The following codecs were tested using Gstreamer Opencv backend (FourCC
+ *
+ * The following codecs were tested using Gstreamer OpenCV backend (FourCC
  * value):
- * 
- * Codec Container
- * ===== =========
- * DIVX avi
- * XVID avi
- * 
+ *
+ * Codec DIVX (avi), XVID (avi)
+ *
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
  */
-public final class Writer {
+final class Writer {
     /**
      * Logger.
      */
-    // CHECKSTYLE:OFF This is not a constant, so naming convenetion is correct
-    private static final Logger logger = Logger.getLogger(Writer.class
+    // CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
+    private static final Logger logger = Logger.getLogger(Writer.class // NOPMD
             .getName());
-    // CHECKSTYLE:ON
+    // CHECKSTYLE:ON ConstantName
     /* Load the OpenCV system library */
     static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+    }
+
+    /**
+     * Suppress default constructor for noninstantiability.
+     */
+    private Writer() {
+        throw new AssertionError();
     }
 
     /**
      * Main method.
-     * 
+     *
      * args[0] = source file or will default to "../resources/traffic.mp4" if no
      * args passed.
-     * 
+     *
      * @param args
      *            Arguments passed.
      */
@@ -85,7 +89,7 @@ public final class Writer {
                 (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
                 (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
         logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
-        final FourCC fourCC = new FourCC("DIVX");
+        final FourCC fourCC = new FourCC("XVID");
         VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(),
                 videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);
         final Mat mat = new Mat();
@@ -97,7 +101,9 @@ public final class Writer {
         }
         final long estimatedTime = System.currentTimeMillis() - startTime;
         logger.log(Level.INFO, String.format("%d frames", frames));
+        // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
         logger.log(Level.INFO, String.format("Elipse time: %4.2f seconds",
                 (double) estimatedTime / 1000));
+        // CHECKSTYLE:ON MagicNumber
     }
 }

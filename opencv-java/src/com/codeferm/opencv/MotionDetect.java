@@ -28,52 +28,61 @@ import org.opencv.imgproc.Imgproc;
 
 /**
  * Uses moving average to determine change percent.
- * 
+ *
  * args[0] = source file or will default to "../resources/traffic.mp4" if no
  * args passed.
- * 
+ *
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
  */
-public final class MotionDetect {
+final class MotionDetect {
     /**
      * Logger.
      */
     // CHECKSTYLE:OFF This is not a constant, so naming convenetion is correct
-    private static final Logger logger = Logger.getLogger(MotionDetect.class
+    private static final Logger logger = Logger.getLogger(MotionDetect.class // NOPMD
             .getName());
     // CHECKSTYLE:ON
     /* Load the OpenCV system library */
     static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
     }
     /**
      * Kernel used for contours.
      */
-    private static final Mat contourKernel = Imgproc.getStructuringElement(
+    private static final Mat CONTOUR_KERNEL = Imgproc.getStructuringElement(
             Imgproc.MORPH_DILATE, new Size(3, 3), new Point(1, 1));
     /**
      * Contour hierarchy.
      */
-    private static final Mat hierarchy = new Mat();
+    private static final Mat HIERARCHY = new Mat();
     /**
      * Point used for contour dilate and erode.
      */
-    private static final Point contourPoint = new Point(-1, -1);
+    private static final Point CONTOUR_POINT = new Point(-1, -1);
+
+    /**
+     * Suppress default constructor for noninstantiability.
+     */
+    private MotionDetect() {
+        throw new AssertionError();
+    }
 
     /**
      * Get contours from image.
-     * 
+     *
      * @param source
      *            Source image.
      * @return List of rectangles.
      */
     public static List<Rect> contours(final Mat source) {
-        Imgproc.dilate(source, source, contourKernel, contourPoint, 15);
-        Imgproc.erode(source, source, contourKernel, contourPoint, 10);
+        // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
+        Imgproc.dilate(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 15);
+        Imgproc.erode(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 10);
+        // CHECKSTYLE:ON MagicNumber
         final List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Imgproc.findContours(source, contours, hierarchy, Imgproc.RETR_TREE,
+        Imgproc.findContours(source, contours, HIERARCHY, Imgproc.RETR_TREE,
                 Imgproc.CHAIN_APPROX_SIMPLE);
         List<Rect> rectList = new ArrayList<Rect>();
         // Convert MatOfPoint to Rectangles
@@ -85,10 +94,10 @@ public final class MotionDetect {
 
     /**
      * Create window, frame and set window to visible.
-     * 
+     *
      * args[0] = source file or will default to "../resources/traffic.mp4" if no
      * args passed.
-     * 
+     *
      * @param args
      *            String array of arguments.
      */
@@ -147,6 +156,7 @@ public final class MotionDetect {
 
             }
             // Generate moving average image
+            // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
             Imgproc.accumulateWeighted(workImg, movingAvgImg, .03);
             // Convert the scale of the moving average
             Core.convertScaleAbs(movingAvgImg, scaleImg);
@@ -185,6 +195,7 @@ public final class MotionDetect {
                 "%d frames, %d frames with motion", frames, framesWithMotion));
         logger.log(Level.INFO, String.format("Elipse time: %4.2f seconds",
                 (double) estimatedTime / 1000));
+        // CHECKSTYLE:ON MagicNumber
         // Free native memory
         mat.release();
         workImg.release();

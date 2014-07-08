@@ -28,33 +28,40 @@ import org.opencv.objdetect.HOGDescriptor;
 
 /**
  * Histogram of Oriented Gradients ([Dalal2005]) object detector.
- * 
+ *
  * args[0] = source file or will default to "../resources/walking.mp4" if no
  * args passed.
- * 
+ *
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
  */
-public final class PeopleDetect {
+final class PeopleDetect {
     /**
      * Logger.
      */
-    // CHECKSTYLE:OFF This is not a constant, so naming convenetion is correct
-    private static final Logger logger = Logger.getLogger(PeopleDetect.class
+    // CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
+    private static final Logger logger = Logger.getLogger(PeopleDetect.class // NOPMD
             .getName());
-    // CHECKSTYLE:ON
+    // CHECKSTYLE:ON ConstantName
     /* Load the OpenCV system library */
     static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+    }
+
+    /**
+     * Suppress default constructor for noninstantiability.
+     */
+    private PeopleDetect() {
+        throw new AssertionError();
     }
 
     /**
      * Create window, frame and set window to visible.
-     * 
+     *
      * args[0] = source file or will default to "../resources/walking.mp4" if no
      * args passed.
-     * 
+     *
      * @param args
      *            String array of arguments.
      */
@@ -107,8 +114,10 @@ public final class PeopleDetect {
         final Scalar rectColor = new Scalar(0, 255, 0);
         final Scalar fontColor = new Scalar(255, 255, 255);
         while (videoCapture.read(mat)) {
+            // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
             hog.detectMultiScale(mat, foundLocations, foundWeights, 0.0,
                     winStride, padding, 1.05, 2.0, false);
+            // CHECKSTYLE:ON MagicNumber
             if (foundLocations.rows() > 0) {
                 framesWithPeople++;
                 List<Double> weightList = foundWeights.toList();
@@ -122,12 +131,18 @@ public final class PeopleDetect {
                     // Draw rectangle around fond object
                     Core.rectangle(mat, rectPoint1, rectPoint2, rectColor, 2);
                     fontPoint.x = rect.x;
+                    // CHECKSTYLE:OFF MagicNumber - Magic numbers here for
+                    // illustration
                     fontPoint.y = rect.y - 4;
+                    // CHECKSTYLE:ON MagicNumber
                     // Print weight
+                    // CHECKSTYLE:OFF MagicNumber - Magic numbers here for
+                    // illustration
                     Core.putText(mat,
                             String.format("%1.2f", weightList.get(i++)),
                             fontPoint, Core.FONT_HERSHEY_PLAIN, 1.5, fontColor,
                             2, Core.LINE_AA, false);
+                    // CHECKSTYLE:ON MagicNumber
                 }
             }
             videoWriter.write(mat);
@@ -136,8 +151,10 @@ public final class PeopleDetect {
         final long estimatedTime = System.currentTimeMillis() - startTime;
         logger.log(Level.INFO, String.format(
                 "%d frames, %d frames with people", frames, framesWithPeople));
+        // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
         logger.log(Level.INFO, String.format("Elipse time: %4.2f seconds",
                 (double) estimatedTime / 1000));
+        // CHECKSTYLE:ON MagicNumber
         // Release native memory
         mat.release();
     }

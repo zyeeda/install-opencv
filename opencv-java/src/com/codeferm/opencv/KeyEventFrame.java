@@ -13,7 +13,7 @@ import java.awt.event.KeyEvent;
 
 /**
  * Frame that listens for keyboard input.
- * 
+ *
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
@@ -34,7 +34,7 @@ public class KeyEventFrame extends Frame implements AWTEventListener {
 
     /**
      * Handle key events and exit if escape pressed.
-     * 
+     *
      * @param event
      *            AWT event.
      */
