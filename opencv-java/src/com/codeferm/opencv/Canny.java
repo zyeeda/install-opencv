@@ -21,31 +21,40 @@ import org.opencv.imgproc.Imgproc;
 
 /**
  * Canny Edge Detector.
- * 
+ *
  * args[0] = source file or will default to "../resources/traffic.mp4" if no
  * args passed.
- * 
+ *
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
  */
-public class Canny {
+final class Canny {
     /**
      * Logger.
      */
+    // CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
     private static final Logger logger = Logger
             .getLogger(Canny.class.getName());
+    // CHECKSTYLE:ON ConstantName
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     /**
+     * Suppress default constructor for noninstantiability.
+     */
+    private Canny() {
+        throw new AssertionError();
+    }
+
+    /**
      * Create window, frame and set window to visible.
-     * 
+     *
      * args[0] = source file or will default to "../resources/traffic.mp4" if no
      * args passed.
-     * 
+     *
      * @param args
      *            String array of arguments.
      */
@@ -93,7 +102,9 @@ public class Canny {
             // Reduce noise with a kernel 3x3
             Imgproc.GaussianBlur(gray, blur, kSize, 0);
             // Canny detector
+            // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
             Imgproc.Canny(blur, edges, 100, 200, 3, false);
+            // CHECKSTYLE:ON MagicNumber
             // Add some colors to edges from original image
             Core.bitwise_and(mat, mat, dst, edges);
             videoWriter.write(dst);
@@ -102,8 +113,10 @@ public class Canny {
         }
         final long estimatedTime = System.currentTimeMillis() - startTime;
         logger.log(Level.INFO, String.format("%d frames", frames));
+        // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
         logger.log(Level.INFO, String.format("Elipse time: %4.2f seconds",
                 (double) estimatedTime / 1000));
+        // CHECKSTYLE:ON MagicNumber
         // Release native memory
         mat.release();
         gray.release();

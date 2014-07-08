@@ -26,14 +26,14 @@ import org.opencv.highgui.VideoCapture;
 /**
  * A simple video capture applet. The Java bindings do not have an imshow
  * equivalent (highgui wrapper) yet.
- * 
+ *
  * args[0] = camera index, url or will default to "0" if no args passed.
- * 
+ *
  * @author sgoldsmith
  * @version 1.0.0
  * @since 1.0.0
  */
-public final class CaptureUI extends Applet implements Runnable {
+final class CaptureUI extends Applet implements Runnable { // NOPMD
     /**
      * Serializable class version number.
      */
@@ -41,38 +41,35 @@ public final class CaptureUI extends Applet implements Runnable {
     /**
      * Logger.
      */
-    // CHECKSTYLE:OFF This is not a constant, so naming convenetion is correct
-    private static final Logger logger = Logger.getLogger(CaptureUI.class
+    // CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
+    private static final Logger logger = Logger.getLogger(CaptureUI.class // NOPMD
             .getName());
-    // CHECKSTYLE:ON
-    /* Load the OpenCV system library */
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
+    // CHECKSTYLE:ON ConstantName
     /**
      * Class for video capturing from video files or cameras.
      */
-    private VideoCapture videoCapture = null;
+    private transient VideoCapture videoCapture;
     /**
      * Frame size.
      */
-    private Size frameSize = null;
-    /**
-     * Holds conversion from Mat to BufferedImage.
-     */
-    private final byte[] pixelBytes = null;
+    private transient Size frameSize;
     /**
      * Applet drawing canvas.
      */
-    private BufferedImage bufferedImage = null;
+    private transient BufferedImage bufferedImage;
     /**
      * Processing thread.
      */
-    private Thread captureThread = null;
+    private transient Thread captureThread;
+
+    /* Load the OpenCV system library */
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+    }
 
     /**
      * Initialize VideoCapture.
-     * 
+     *
      * @param url
      *            Camera URL.
      */
@@ -103,7 +100,7 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * VideoCapture accessor.
-     * 
+     *
      * @return VideoCapture.
      */
     public VideoCapture getCap() {
@@ -112,7 +109,7 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * Frame size accessor.
-     * 
+     *
      * @return Frame size.
      */
     public Size getFrameSize() {
@@ -175,7 +172,7 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * Convert from Mat to BufferedImage.
-     * 
+     *
      * @param mat
      *            Mat array.
      */
@@ -199,9 +196,9 @@ public final class CaptureUI extends Applet implements Runnable {
 
     /**
      * Create window, frame and set window to visible.
-     * 
+     *
      * args[0] = camera index, url or will default to "0" if no args passed.
-     * 
+     *
      * @param args
      *            String array of arguments.
      */
