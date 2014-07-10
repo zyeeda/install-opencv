@@ -250,7 +250,7 @@ log "Installing OpenCV dependenices...\n"
 # Install Image I/O libraries 
 apt-get -y install libtiff4-dev libjpeg-dev libjasper-dev >> $logfile 2>&1
 # Install Video I/O libraries, support for Firewire video cameras and video streaming libraries
-apt-get -y install libav-tools libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev v4l-utils v4l-conf >> $logfile 2>&1
+apt-get -y install libav-tools libavcodec-dev libavformat-dev libswscale-dev libxine-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev v4l-utils v4l-conf >> $logfile 2>&1
 # Install the Python development environment and the Python Numerical library
 apt-get -y install python-dev python-numpy >> $logfile 2>&1
 # Install the parallel code processing library (the Intel tbb library)
