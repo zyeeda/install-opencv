@@ -46,6 +46,10 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
             .getName());
     // CHECKSTYLE:ON ConstantName
     /**
+     * Mat for image capture.
+     */
+    private transient Mat captureMat;
+    /**
      * Class for video capturing from video files or cameras.
      */
     private transient VideoCapture videoCapture;
@@ -99,6 +103,15 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
     }
 
     /**
+     * Return capture Mat.
+     *
+     * @return Current Mat image from capture.
+     */
+    public Mat getCaptureMat() {
+        return captureMat;
+    }
+
+    /**
      * VideoCapture accessor.
      *
      * @return VideoCapture.
@@ -122,6 +135,7 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
     @Override
     public void init() {
         logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
+        captureMat = new Mat();
     }
 
     /**
@@ -148,6 +162,10 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
             }
             captureThread = null;
         }
+        // Release native memory
+        if (captureMat != null) {
+            captureMat.release();
+        }
     }
 
     /**
@@ -156,13 +174,12 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
      */
     @Override
     public void run() {
-        final Mat mat = new Mat();
         while (true) {
-            if (videoCapture.read(mat)) {
+            if (videoCapture.read(captureMat)) {
                 /*
                  * Add image processing code here.
                  */
-                convert(mat);
+                convert(captureMat);
                 repaint();
             } else {
                 break;
