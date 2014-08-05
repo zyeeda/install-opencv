@@ -116,7 +116,7 @@ for native memory to leak without being able to detect it from Java (jmap/jhat).
 These are the steps required to analyze a Java program using OpenCV (or any JNI
 based app). 
 * Install Valgrind and the Valkyrie GUI
-    *`sudo apt-get install valgrind valkyrie`
+    * `sudo apt-get install valgrind valkyrie`
 * Profile application
     * `cd /home/<username>/workspace/install-opencv/opencv-java`
     * `valgrind --trace-children=yes --leak-check=full --xml=yes --xml-file=/home/<username>/canny.xml java -Djava.compiler=NONE -Djava.library.path=/home/<username>/opencv-2.4.x/build/lib -cp /home/<username>/opencv-2.4.x/build/bin/opencv-24x.jar:bin com.codeferm.opencv.Canny`
