@@ -81,13 +81,15 @@ final class MotionDetect {
         Imgproc.dilate(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 15);
         Imgproc.erode(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 10);
         // CHECKSTYLE:ON MagicNumber
-        final List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Imgproc.findContours(source, contours, HIERARCHY, Imgproc.RETR_TREE,
+        final List<MatOfPoint> contoursList = new ArrayList<MatOfPoint>();
+        Imgproc.findContours(source, contoursList, HIERARCHY, Imgproc.RETR_TREE,
                 Imgproc.CHAIN_APPROX_SIMPLE);
         List<Rect> rectList = new ArrayList<Rect>();
         // Convert MatOfPoint to Rectangles
-        for (MatOfPoint mop : contours) {
+        for (MatOfPoint mop : contoursList) {
             rectList.add(Imgproc.boundingRect(mop));
+            // Release native memory
+            mop.release();
         }
         return rectList;
     }
