@@ -80,7 +80,11 @@ log(){
 	echo "\n$timestamp $1" >> $logfile 2>&1
 }
 
-log "Installing OpenCV $opencvver on Ubuntu $ubuntuver $arch...\n\nHost:   $hostname\nDomain: $domain\nUser:   $curuser\n"
+log "Installing OpenCV $opencvver on Ubuntu $ubuntuver $arch...\n\nHost:   $hostname\nDomain: $domain\nUser:   $curuser"
+
+# Remove temp dir
+log "Removing tmpdir $tmpdir\n"
+rm -rf "$tmpdir"
 
 # Install Oracle Java JDK if installjava True
 if [ $installjava = "True" ]; then
@@ -109,9 +113,6 @@ if [ $installjava = "True" ]; then
 		echo "JAVA_HOME=$javahome" >> /etc/environment
 		. /etc/environment
 	fi
-	# Make sure root picks up JAVA_HOME for this process
-	export JAVA_HOME=$javahome
-	echo "JAVA_HOME = $JAVA_HOME"
 	# Latest ANT without all the junk from apt-get install ant
 	log "Installing Ant $antver...\n"
 	echo -n "Downloading $anturl$antarchive to $tmpdir     "
@@ -138,6 +139,10 @@ if [ $installjava = "True" ]; then
 		echo "PATH = $PATH"
 	fi
 fi
+
+# Make sure root picks up JAVA_HOME for this process
+export JAVA_HOME=$javahome
+echo "JAVA_HOME = $JAVA_HOME"
 
 # Remove existing ffmpeg, x264, and other dependencies (this removes a lot of other dependencies)
 if [ $removelibs = "True" ]; then
@@ -283,6 +288,11 @@ mv "$tmpdir/opencv-$opencvver" "$opencvhome"
 
 # Patch gen_java.py to generate VideoWriter by removing from class_ignore_list
 sed -i 's/\"VideoWriter\",/'\#\"VideoWriter\",'/g' "$opencvhome$genjava"
+
+# Patch core+Mat.java to remove finalize method which causes heap leaks
+# Renamed method is delete() which calls n_delete just like finalize did
+sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$coremat"
+sed -i 's~super.finalize~//super.finalize~g' "$opencvhome$coremat"
 
 # Patch gen_java.py to generate constants by removing from const_ignore_list
 sed -i 's/\"CV_CAP_PROP_FPS\",/'\#\"CV_CAP_PROP_FPS\",'/g' "$opencvhome$genjava"

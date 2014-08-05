@@ -22,6 +22,9 @@ opencvver="2.4.9"
 # Relative path to gen_java.py
 genjava="/modules/java/generator/gen_java.py"
 
+# Relative path to core+Mat.java
+coremat="/modules/java/generator/src/java/core+Mat.java"
+
 # Relative path to jdhuff.c
 jdhuff="/3rdparty/libjpeg/jdhuff.c"
 
@@ -32,13 +35,14 @@ jdmarker="/3rdparty/libjpeg/jdmarker.c"
 tmpdir="$HOME/opencv-$opencvver-libs"
 
 # Set to True to install Java
-installjava="True"
+installjava="False"
 
 # Oracle JDK
+javahome=/usr/lib/jvm/jdk1.8.0
+
 if [ $installjava = "True" ]; then
 	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u5-b13/"
 	jdkver="jdk1.8.0_05"
-	javahome=/usr/lib/jvm/jdk1.8.0
 	if [ "$arch" = "x86_64" ]; then
 		jdkarchive="jdk-8u5-linux-x64.tar.gz"
 	elif [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
