@@ -19,6 +19,7 @@ sane in config.sh.
     * Patch libjpeg to mute common warnings that will fill up the logs.
 * Java 8 and Apache Ant
     * Patch gen_java.py to generate missing VideoWriter class and add some missing CV_CAP_PROP constants
+    * Patch core+Mat.java to refactor protected finalize() to public delete(). finalize() execution is not guaranteed and will cause heap/native leaks
     * FourCC class
     * CaptureUI Applet to view images/video since there's no imshow with the bindings
 * Java and Python examples
@@ -109,6 +110,23 @@ To run compiled class (Canny for this example) from shell:
 
 ![CaptureUI Java](images/captureui-java.png)
 
+#### How to check for native memory leaks
+Since the OpenCV Java bindings wrap OpenCV's C++ libraries there's opportunities
+for native memory to leak without being able to detect it from Java (jmap/jhat).
+These are the steps required to analyze a Java program using OpenCV (or any JNI
+based app). 
+* Install Valgrind and the Valkyrie GUI
+    *`sudo apt-get install valgrind valkyrie`
+* Profile application
+    * `cd /home/<username>/workspace/install-opencv/opencv-java`
+    * `valgrind --trace-children=yes --leak-check=full --xml=yes --xml-file=/home/<username>/canny.xml java -Djava.compiler=NONE -Djava.library.path=/home/<username>/opencv-2.4.x/build/lib -cp /home/<username>/opencv-2.4.x/build/bin/opencv-24x.jar:bin com.codeferm.opencv.Canny`
+* Examine Valgrind output
+    * `valkyrie`
+    * Open canny.xml
+    * Scroll down to bottom
+    * If you see a 9M entry without OpenCV classes don't worry this is normal
+    * Look for OpenCV classes which ar wrapped by Java
+    
 The Canny example is slightly faster in Java (3.08 seconds) compared to Python
 (3.18 seconds). In general, there's not enough difference in processing over 900
 frames to pick one set of bindings over another for performance reasons.
