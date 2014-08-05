@@ -125,7 +125,7 @@ based app).
     * Open canny.xml
     * Scroll down to bottom
     * If you see a 9M entry without OpenCV classes don't worry this is normal
-    * Look for OpenCV classes which ar wrapped by Java
+    * Look for OpenCV classes which ar wrapped by Java such as `0x1FDD0BFE: Java_org_opencv_imgproc_Imgproc_findContours_11 (in /home/<username>/opencv-2.4.x/build/lib/libopencv_java24x.so)`
     
 The Canny example is slightly faster in Java (3.08 seconds) compared to Python
 (3.18 seconds). In general, there's not enough difference in processing over 900
