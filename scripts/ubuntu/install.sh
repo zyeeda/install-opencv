@@ -289,6 +289,9 @@ mv "$tmpdir/opencv-$opencvver" "$opencvhome"
 # Patch gen_java.py to generate VideoWriter by removing from class_ignore_list
 sed -i 's/\"VideoWriter\",/'\#\"VideoWriter\",'/g' "$opencvhome$genjava"
 
+# Patch gen_java.py to generate delete() instead of finalize() methods
+sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$genjava"
+
 # Patch core+Mat.java to remove finalize method which causes heap leaks
 # Renamed method is delete() which calls n_delete just like finalize did
 sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$coremat"
