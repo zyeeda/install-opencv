@@ -25,11 +25,11 @@ genjava="/modules/java/generator/gen_java.py"
 # Relative path to core+Mat.java
 coremat="/modules/java/generator/src/java/core+Mat.java"
 
-# Relative path to imgproc+Imgproc.java
-imgprocimgproc="/build/modules/java/imgproc+Imgproc.java"
+# Relative path to Imgproc.java
+imgproc="/build/src/org/opencv/imgproc/Imgproc.java"
 
-# Relative path to utils+Converters-jdoc.java
-utilsconvertersjdoc="/build/modules/java/utils+Converters-jdoc.java"
+# Relative path to Converters.java
+converters="/build/src/org/opencv/utils/Converters.java"
 
 # Relative path to jdhuff.c
 jdhuff="/3rdparty/libjpeg/jdhuff.c"
@@ -41,7 +41,7 @@ jdmarker="/3rdparty/libjpeg/jdmarker.c"
 tmpdir="$HOME/opencv-$opencvver-libs"
 
 # Set to True to install Java
-installjava="True"
+installjava="False"
 
 # Oracle JDK
 javahome=/usr/lib/jvm/jdk1.8.0

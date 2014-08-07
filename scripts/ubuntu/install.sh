@@ -332,15 +332,15 @@ echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf
 ldconfig
 
 #
-# Patch generated Java classes
+# Patch Java source post-generated
 #
 
 log "Patching Java source post-generated\n"
-# Patch imgproc+Imgproc.java to fix memory leaks
-sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Converters.Mat_to_vector_vector_Point(contours_mat, contours);\n        contours_mat.release();/g' "$opencvhome$imgprocimgproc"
+# Patch Imgproc.java to fix memory leaks
+sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Converters.Mat_to_vector_vector_Point(contours_mat, contours);\n        contours_mat.release();/g' "$opencvhome$imgproc"
 
-# Patch utils+Converters-jdoc.java to fix memory leaks
-sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();/g' "$opencvhome$utilsconvertersjdoc"
+# Patch Converters.java to fix memory leaks
+sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();/g' "$opencvhome$converters"
 
 # Rebuild OpenCV jar file with patched classes
 make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
