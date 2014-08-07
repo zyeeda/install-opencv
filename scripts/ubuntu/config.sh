@@ -41,7 +41,7 @@ jdmarker="/3rdparty/libjpeg/jdmarker.c"
 tmpdir="$HOME/opencv-$opencvver-libs"
 
 # Set to True to install Java
-installjava="False"
+installjava="True"
 
 # Oracle JDK
 javahome=/usr/lib/jvm/jdk1.8.0
