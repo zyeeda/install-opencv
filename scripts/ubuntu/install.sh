@@ -286,6 +286,11 @@ rm -rf "$opencvhome"
 echo "Moving $tmpdir/opencv-$opencvver to $opencvhome"
 mv "$tmpdir/opencv-$opencvver" "$opencvhome"
 
+#
+# Patch source pre-compile
+#
+
+log "Patching source pre-compile\n"
 # Patch gen_java.py to generate VideoWriter by removing from class_ignore_list
 sed -i 's/\"VideoWriter\",/'\#\"VideoWriter\",'/g' "$opencvhome$genjava"
 
@@ -325,6 +330,20 @@ make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
 make install >> $logfile 2>&1
 echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf
 ldconfig
+
+#
+# Patch generated Java classes
+#
+
+log "Patching Java source post-generated\n"
+# Patch imgproc+Imgproc.java to fix memory leaks
+sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Converters.Mat_to_vector_vector_Point(contours_mat, contours);\n        contours_mat.release();/g' "$opencvhome$imgprocimgproc"
+
+# Patch utils+Converters-jdoc.java to fix memory leaks
+sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();/g' "$opencvhome$utilsconvertersjdoc"
+
+# Rebuild OpenCV jar file with patched classes
+make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
 
 # Set permissions on OpenCV dir to user that ran script
 chown -R $curuser:$curuser $opencvhome
