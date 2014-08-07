@@ -31,6 +31,12 @@ imgproc="/build/src/org/opencv/imgproc/Imgproc.java"
 # Relative path to Converters.java
 converters="/build/src/org/opencv/utils/Converters.java"
 
+# Relative path to DeviceInfo.java
+deviceinfo="/build/src/org/opencv/gpu/DeviceInfo.java"
+
+# Relative path to TargetArchs.java
+targetarchs="/build/src/org/opencv/gpu/TargetArchs.java"
+
 # Relative path to jdhuff.c
 jdhuff="/3rdparty/libjpeg/jdhuff.c"
 
