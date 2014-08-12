@@ -107,6 +107,7 @@ To run compiled class (Canny for this example) from shell:
 * Missing VideoWriter (I fixed this by patching gen_java.py)
 * Constants are missing (These can by patched as well in the install script)
 * There's no imshow equivalent, so check out [CaptureUI](https://github.com/sgjava/install-opencv/blob/master/opencv-java/src/com/codeferm/opencv/CaptureUI.java)
+* Make sure you call Mat.release followed by Mat.delete() to free native memory
 
 ![CaptureUI Java](images/captureui-java.png)
 
@@ -115,11 +116,11 @@ Since the OpenCV Java bindings wrap OpenCV's C++ libraries there's opportunities
 for native memory to leak without being able to detect it from Java (jmap/jhat).
 The Java bindings make use of the finalize method which is generally bad practice.
 I have removed all of these via patching. Some of the bindings create new Mat
-objects and subclasses of Mat without calling Mat.release(). This will cause
-native memory leaks and I'm patching these as they are encountered. The real
-fix is for the code to be corrected, so patching is not required. I have submitted 
-bugs regarding the memory leaks, but until the code is fixed patching is the only
-cure. These are the steps required to analyze a Java program using OpenCV (or any
+objects and subclasses of Mat without calling Mat.release() and Mat.delete(). This
+will cause native memory leaks and I'm patching these as they are encountered. The
+real fix is for the code to be corrected, so patching is not required. I have
+submitted bugs regarding the memory leaks, but until the code is fixed patching is
+the only cure. These are the steps required to analyze a Java program using OpenCV (or any
 JNI based app). 
 * Install Valgrind and the Valkyrie GUI
     * `sudo apt-get install valgrind valkyrie`
