@@ -82,14 +82,15 @@ final class MotionDetect {
         Imgproc.erode(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 10);
         // CHECKSTYLE:ON MagicNumber
         final List<MatOfPoint> contoursList = new ArrayList<MatOfPoint>();
-        Imgproc.findContours(source, contoursList, HIERARCHY, Imgproc.RETR_TREE,
-                Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(source, contoursList, HIERARCHY,
+                Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
         List<Rect> rectList = new ArrayList<Rect>();
         // Convert MatOfPoint to Rectangles
         for (MatOfPoint mop : contoursList) {
             rectList.add(Imgproc.boundingRect(mop));
             // Release native memory
             mop.release();
+            mop.delete();
         }
         return rectList;
     }
@@ -153,8 +154,8 @@ final class MotionDetect {
             Imgproc.blur(mat, workImg, kSize);
             // Generate moving average image if needed
             if (movingAvgImg == null) {
-                movingAvgImg = workImg.clone();
-                movingAvgImg.convertTo(movingAvgImg, CvType.CV_32F);
+                movingAvgImg = new Mat();
+                workImg.convertTo(movingAvgImg, CvType.CV_32F);
 
             }
             // Generate moving average image
@@ -173,8 +174,7 @@ final class MotionDetect {
             // Detect if camera is adjusting and reset reference if more than
             // maxChange
             if (motionPercent > 25.0) {
-                movingAvgImg = workImg.clone();
-                movingAvgImg.convertTo(movingAvgImg, CvType.CV_32F);
+                workImg.convertTo(movingAvgImg, CvType.CV_32F);
             }
             List<Rect> movementLocations = contours(gray);
             // Threshold trigger motion
@@ -200,10 +200,16 @@ final class MotionDetect {
         // CHECKSTYLE:ON MagicNumber
         // Free native memory
         mat.release();
+        mat.delete();
         workImg.release();
+        workImg.delete();
         movingAvgImg.release();
+        movingAvgImg.delete();
         gray.release();
+        gray.delete();
         diffImg.release();
+        diffImg.delete();
         scaleImg.release();
+        scaleImg.delete();
     }
 }

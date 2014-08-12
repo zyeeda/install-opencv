@@ -337,10 +337,10 @@ ldconfig
 
 log "Patching Java source post-generated\n"
 # Patch Imgproc.java to fix memory leaks
-sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Converters.Mat_to_vector_vector_Point(contours_mat, contours);\n        contours_mat.release();/g' "$opencvhome$imgproc"
+sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Converters.Mat_to_vector_vector_Point(contours_mat, contours);\n        contours_mat.release();\n        contours_mat.delete();/g' "$opencvhome$imgproc"
 
 # Patch Converters.java to fix memory leaks
-sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();/g' "$opencvhome$converters"
+sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();\n            mi.delete();/g' "$opencvhome$converters"
 
 # Patch DeviceInfo.java to fix memory leaks
 sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$deviceinfo"
