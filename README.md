@@ -107,7 +107,7 @@ To run compiled class (Canny for this example) from shell:
 * Missing VideoWriter (I fixed this by patching gen_java.py)
 * Constants are missing (These can by patched as well in the install script)
 * There's no imshow equivalent, so check out [CaptureUI](https://github.com/sgjava/install-opencv/blob/master/opencv-java/src/com/codeferm/opencv/CaptureUI.java)
-* Make sure you call Mat.release followed by Mat.delete() to free native memory
+* Make sure you call Mat.release() followed by Mat.delete() to free native memory
 
 ![CaptureUI Java](images/captureui-java.png)
 
@@ -131,7 +131,7 @@ JNI based app).
     * `valkyrie`
     * Open canny.xml
     * Scroll down to bottom
-    * Look for OpenCV classes which ar wrapped by Java such as `0x1FDD0BFE: Java_org_opencv_imgproc_Imgproc_findContours_11 (in /home/<username>/opencv-2.4.x/build/lib/libopencv_java24x.so)` This will give you a hit which Java class is leaking memory. There's always a chance it could by a memory leak in the C++ code which would require patching the C++ source.
+    * Look for OpenCV classes which ar wrapped by Java such as `0x1FDD0BFE: Java_org_opencv_imgproc_Imgproc_findContours_11 (in /home/<username>/opencv-2.4.x/build/lib/libopencv_java24x.so)` This will give you a hint which Java class is leaking memory. There's always a chance it could by a memory leak in the C++ code which would require patching the C++ source.
     
 The Canny example is slightly faster in Java (3.08 seconds) compared to Python
 (3.18 seconds). In general, there's not enough difference in processing over 900
