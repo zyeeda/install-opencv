@@ -53,14 +53,14 @@ installjava="Trye"
 javahome=/usr/lib/jvm/jdk1.8.0
 
 if [ $installjava = "True" ]; then
-	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u11-b12/"
-	jdkver="jdk1.8.0_11"
+	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u20-b26/"
+	jdkver="jdk1.8.0_20"
 	if [ "$arch" = "x86_64" ]; then
-		jdkarchive="jdk-8u11-linux-x64.tar.gz"
+		jdkarchive="jdk-8u20-linux-x64.tar.gz"
 	elif [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
-		jdkarchive="jdk-8u11-linux-i586.tar.gz"
+		jdkarchive="jdk-8u20-linux-i586.tar.gz"
 	elif [ "$arch" = "armv7l" ]; then
-		jdkarchive="jdk-8u11-linux-arm-vfp-hflt.tar.gz"
+		jdkarchive="jdk-8u20-linux-arm-vfp-hflt.tar.gz"
 	else
 		echo "\nNo supported architectures detected!"
 		exit 1
@@ -77,9 +77,9 @@ fi
 removelibs="False"
 
 # yasm
-yasmurl="http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz"
-yasmarchive="yasm-1.2.0.tar.gz"
-yasmver="yasm-1.2.0"
+yasmurl="http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz"
+yasmarchive="yasm-1.3.0.tar.gz"
+yasmver="yasm-1.3.0"
 
 # x264
 x264url="git://git.videolan.org/x264.git"
