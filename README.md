@@ -18,9 +18,10 @@ Some Java classes in the 2.4 branch are missing in 3.0.0. So far I've identified
 most of my Java examples will not compile. I suspect these classes will be added back in at some point hopefully.
 I still need to test OpenCV 3.0.0 on an ARM device, so you may want to wait until I've
 completed this task. Need to do:
-* Test build on ARM
+* Java patching
 * jdhuff patching
 * jdmarker patching
+* Test build on ARM
 * Get TBB working at some point.
 
 ### WARNING
