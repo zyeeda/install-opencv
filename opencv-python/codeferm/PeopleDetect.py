@@ -5,7 +5,7 @@ Created by Steven P. Goldsmith on December 24, 2013
 sgoldsmith@codeferm.com
 """
 
-import logging, sys, time, cv2, cv2.cv as cv
+import logging, sys, time, cv2
 
 """Histogram of Oriented Gradients ([Dalal2005]) object detector.
 
@@ -32,12 +32,12 @@ videoCapture = cv2.VideoCapture(url)
 logger.info("OpenCV %s" % cv2.__version__)
 logger.info("Input file: %s" % url)
 logger.info("Output file: %s" % outputFile)
-logger.info("Resolution: %dx%d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
-                               videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
+logger.info("Resolution: %dx%d" % (videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH),
+                               videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
-videoWriter = cv2.VideoWriter(outputFile, cv.CV_FOURCC(*'DIVX'), videoCapture.get(cv.CV_CAP_PROP_FPS),
-                              (int(videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))), True)
+videoWriter = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc(*'DIVX'), videoCapture.get(cv2.CAP_PROP_FPS),
+                              (int(videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT))), True)
 lastFrame = False
 frames = 0
 framesWithPeople = 0
@@ -53,7 +53,7 @@ while not lastFrame:
                 # Draw rectangle around fond object
                 cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 # Print weight
-                cv2.putText(image, "%1.2f" % foundWeights[i], (x, y - 4), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 255), thickness=2, lineType=cv2.CV_AA)
+                cv2.putText(image, "%1.2f" % foundWeights[i], (x, y - 4), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 255), thickness=2, lineType=cv2.LINE_AA)
                 i += 1
     else:
         lastFrame = True

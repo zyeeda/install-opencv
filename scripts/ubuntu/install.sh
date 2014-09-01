@@ -266,7 +266,7 @@ apt-get -y install libqt4-dev libgtk2.0-dev >> $logfile 2>&1
 # Install other dependencies (if need be it would upgrade current version of the packages)
 apt-get -y install patch subversion ruby librtmp0 librtmp-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libvpx-dev libxvidcore-dev >> $logfile 2>&1
 # Install optional packages
-apt-get -y install libdc1394-utils libdc1394-22-dev libdc1394-22 libjpeg-dev libpng-dev libtiff-dev libjasper-dev >> $logfile 2>&1
+apt-get -y install libdc1394-utils libdc1394-22-dev libdc1394-22 libjpeg-dev libpng-dev libtiff-dev libjasper-dev ocl-icd-opencl-dev >> $logfile 2>&1
 
 # Make sure unzip is installed
 apt-get -y install unzip

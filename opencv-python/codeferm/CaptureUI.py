@@ -5,7 +5,7 @@ Created by Steven P. Goldsmith on December 21, 2013
 sgoldsmith@codeferm.com
 """
 
-import logging, sys, re, socket, cv2, cv2.cv as cv
+import logging, sys, re, socket, cv2
 
 """A simple video capture script using imshow.
 
@@ -38,10 +38,10 @@ success = videoCapture.open(url)
 logger.info("OpenCV %s" % cv2.__version__)
 logger.info("Press [Esc] to exit")
 logger.info("URL: %s" % url)
-logger.info("Resolution: %dx%d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
-                               videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
+logger.info("Resolution: %dx%d" % (videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH),
+                               videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
 # Deal with VideoCapture always returning True otherwise it will hang on VideoCapture.grab()
-if videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH) > 0 and videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT) > 0:
+if videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH) > 0 and videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT) > 0:
     cv2.namedWindow("Python Capture")
     key = -1
     # Wait for escape to be pressed

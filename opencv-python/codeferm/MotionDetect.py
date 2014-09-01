@@ -5,7 +5,7 @@ Created by Steven P. Goldsmith on December 23, 2013
 sgoldsmith@codeferm.com
 """
 
-import logging, sys, time, numpy, cv2, cv2.cv as cv
+import logging, sys, time, numpy, cv2
 
 """Motion detector.
     
@@ -23,7 +23,7 @@ def contours(source):
     # The bright areas of the image (the background, apparently), get thinner, whereas the dark zones bigger
     source = cv2.erode(source, None, iterations=10);
     # Find contours
-    contours, heirarchy = cv2.findContours(source, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    image, contours, heirarchy = cv2.findContours(source, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     # Add objects with motion
     movementLocations = []
     for contour in contours:
@@ -48,15 +48,15 @@ videoCapture = cv2.VideoCapture(url)
 logger.info("OpenCV %s" % cv2.__version__)
 logger.info("Input file: %s" % url)
 logger.info("Output file: %s" % outputFile)
-logger.info("Resolution: %dx%d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
-                               videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
-videoWriter = cv2.VideoWriter(outputFile, cv.CV_FOURCC(*'DIVX'), videoCapture.get(cv.CV_CAP_PROP_FPS),
-                              (int(videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))), True)
+logger.info("Resolution: %dx%d" % (videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH),
+                               videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+videoWriter = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc(*'DIVX'), videoCapture.get(cv2.CAP_PROP_FPS),
+                              (int(videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT))), True)
 lastFrame = False
 frames = 0
 framesWithMotion = 0
 movingAvgImg = None
-totalPixels = videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH) * videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)
+totalPixels = videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH) * videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT)
 movementLocations = []
 start = time.time()
 while not lastFrame:

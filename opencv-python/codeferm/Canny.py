@@ -5,7 +5,7 @@ Created by Steven P. Goldsmith on December 23, 2013
 sgoldsmith@codeferm.com
 """
 
-import logging, sys, time, cv2, cv2.cv as cv
+import logging, sys, time, cv2
 
 """Canny Edge Detector.
 
@@ -32,12 +32,13 @@ logger.info("OpenCV %s" % cv2.__version__)
 logger.info("Input file: %s" % url)
 logger.info("Output file: %s" % outputFile)
 videoCapture = cv2.VideoCapture(url)
-logger.info("Resolution: %dx%d" % (videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH),
-                               videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
-videoWriter = cv2.VideoWriter(outputFile, cv.CV_FOURCC(*'DIVX'),
-                              videoCapture.get(cv.CV_CAP_PROP_FPS),
-                              (int(videoCapture.get(cv.CV_CAP_PROP_FRAME_WIDTH)),
-                               int(videoCapture.get(cv.CV_CAP_PROP_FRAME_HEIGHT))), True)
+logger.info("Resolution: %dx%d" % (videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH),
+                               videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+
+videoWriter = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc(*'DIVX'),
+                              videoCapture.get(cv2.CAP_PROP_FPS),
+                              (int(videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH)),
+                               int(videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT))), True)
 lastFrame = False
 frames = 0
 start = time.time()
