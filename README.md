@@ -5,6 +5,24 @@ In order to automate this process I've put together a script that installs
 the necessary prerequisites and builds OpenCV with Java and Python bindings. I
 also included example source, so you can test the installation.
 
+### OpenCV 3.0.0
+
+I created a branch [2_4_9_0](https://github.com/sgjava/install-opencv/tree/2_4_9_0)
+since that's the last stable build script before OpenCV 3.0.0.
+
+The master branch now builds OpenCV 3.0.0 from GitHub, so you can consider this experimental
+until the OpenCV build is solid. TBB causes compile failure on x86_64 and I posted a
+[question](http://answers.opencv.org/question/40544/opencv-300-alpha-build-failure-with-tbb)
+on OpenCV questions if you want see the log output. For now x86/x86_64 will not build with TBB.
+Some Java classes in the 2.4 branch are missing in 3.0.0. So far I've identified the VideoCapture class. This means
+most of my Java examples will not compile. I suspect these classes will be added back in at some point hopefully.
+I still need to test OpenCV 3.0.0 on an ARM device, so you may want to wait until I've
+completed this task. Need to do:
+* Test build on ARM
+* jdhuff patching
+* jdmarker patching
+* Get TBB working at some point.
+
 ### WARNING
 
 This script has the ability to install/remove Ubuntu packages and it also

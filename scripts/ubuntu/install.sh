@@ -51,6 +51,7 @@ curdir=$(cd `dirname $0` && pwd)
 
 # stdout and stderr for commands logged
 logfile="$curdir/install.log"
+rm -f $logfile
 
 # Source config file
 . "$curdir"/config.sh
@@ -270,21 +271,12 @@ apt-get -y install libdc1394-utils libdc1394-22-dev libdc1394-22 libjpeg-dev lib
 # Make sure unzip is installed
 apt-get -y install unzip
 
-# For 2.4.7 is a tar.gz and 2.4.8 is a zip, so I'll comment out the tar.gz stuff in case they switch back
 log "Installing OpenCV $opencvver...\n"
-#opencvarchive="opencv-$opencvver.tar.gz"
-opencvarchive="opencv-$opencvver.zip"
-opencvurl="http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$opencvver/$opencvarchive"
+cd "$tmpdir"
+git clone "$opencvurl"
 opencvhome="$HOME/opencv-$opencvver"
-echo -n "Downloading $opencvurl to $tmpdir     "
-wget --directory-prefix=$tmpdir --timestamping --progress=dot "$opencvurl" 2>&1 | grep --line-buffered "%" |  sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
-echo "\nExtracting $tmpdir/$opencvarchive to $tmpdir"
-#tar -xf "$tmpdir/$opencvarchive" -C "$tmpdir"
-unzip "$tmpdir/$opencvarchive" -d "$tmpdir"
-echo "Removing $opencvhome"
-rm -rf "$opencvhome"
-echo "Moving $tmpdir/opencv-$opencvver to $opencvhome"
-mv "$tmpdir/opencv-$opencvver" "$opencvhome"
+cp -r "$tmpdir/opencv" "$opencvhome"
+echo "\nCopying $tmpdir/opencv to $opencvhome"
 
 #
 # Patch source pre-compile
@@ -292,28 +284,30 @@ mv "$tmpdir/opencv-$opencvver" "$opencvhome"
 
 log "Patching source pre-compile\n"
 # Patch gen_java.py to generate VideoWriter by removing from class_ignore_list
-sed -i 's/\"VideoWriter\",/'\#\"VideoWriter\",'/g' "$opencvhome$genjava"
+#sed -i 's/\"VideoWriter\",/'\#\"VideoWriter\",'/g' "$opencvhome$genjava"
 
 # Patch gen_java.py to generate delete() instead of finalize() methods
-sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$genjava"
+#sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$genjava"
 
 # Patch core+Mat.java to remove finalize method which causes heap leaks
 # Renamed method is delete() which calls n_delete just like finalize did
-sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$coremat"
-sed -i 's~super.finalize~//super.finalize~g' "$opencvhome$coremat"
+#sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$coremat"
+#sed -i 's~super.finalize~//super.finalize~g' "$opencvhome$coremat"
 
 # Patch gen_java.py to generate constants by removing from const_ignore_list
-sed -i 's/\"CV_CAP_PROP_FPS\",/'\#\"CV_CAP_PROP_FPS\",'/g' "$opencvhome$genjava"
-sed -i 's/\"CV_CAP_PROP_FOURCC\",/'\#\"CV_CAP_PROP_FOURCC\",'/g' "$opencvhome$genjava"
-sed -i 's/\"CV_CAP_PROP_FRAME_COUNT\",/'\#\"CV_CAP_PROP_FRAME_COUNT\",'/g' "$opencvhome$genjava"
+#sed -i 's/\"CV_CAP_PROP_FPS\",/'\#\"CV_CAP_PROP_FPS\",'/g' "$opencvhome$genjava"
+#sed -i 's/\"CV_CAP_PROP_FOURCC\",/'\#\"CV_CAP_PROP_FOURCC\",'/g' "$opencvhome$genjava"
+#sed -i 's/\"CV_CAP_PROP_FRAME_COUNT\",/'\#\"CV_CAP_PROP_FRAME_COUNT\",'/g' "$opencvhome$genjava"
+
+# Need to test for OpenCV 3.0.0-alpha
 
 # Patch jdhuff.c to remove "Invalid SOS parameters for sequential JPEG" warning
-sed -i 's~if (cinfo->Ss~//if (cinfo->Ss~g' "$opencvhome$jdhuff"
-sed -i 's~cinfo->Ah~//cinfo->Ah~g' "$opencvhome$jdhuff"
-sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~g' "$opencvhome$jdhuff"
+#sed -i 's~if (cinfo->Ss~//if (cinfo->Ss~g' "$opencvhome$jdhuff"
+#sed -i 's~cinfo->Ah~//cinfo->Ah~g' "$opencvhome$jdhuff"
+#sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~g' "$opencvhome$jdhuff"
 
 # Patch jdmarker.c to remove "Corrupt JPEG data: xx extraneous bytes before marker 0xd9" warning
-sed -i 's~WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~//WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~g' "$opencvhome$jdmarker"
+#sed -i 's~WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~//WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~g' "$opencvhome$jdmarker"
 
 # Compile OpenCV
 log "Compile OpenCV..."
@@ -322,9 +316,11 @@ mkdir build
 cd build
 # If ARM then compile with multi-core, FPU and NEON extensions
 if [ "$arch" = "armv7l" ]; then
-	cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DBUILD_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON -DENABLE_VFPV3=ON -DENABLE_NEON=ON .. >> $logfile 2>&1
+    # Still need to test OpenCV 3.0.0-alpha on ARM 08/28/2014
+	cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DBUILD_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON -DENABLE_VFPV3=ON -DENABLE_NEON=ON .. >> $logfile 2>&1
 else
-	cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_NEW_PYTHON_SUPPORT=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=ON -DBUILD_TBB=ON -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON .. >> $logfile 2>&1
+    # TBB causes OpenCV 3.0.0-alpha build to fail on x86, so I've disabled 08/28/2014
+	cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SHARED_LIBS=ON -DINSTALL_PYTHON_EXAMPLES=ON -DWITH_TBB=OFF -DBUILD_TBB=OFF -DWITH_V4L=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_EIGEN=ON -DWITH_OPENEXR=ON -DBUILD_JPEG=ON .. >> $logfile 2>&1
 fi
 make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
 make install >> $logfile 2>&1
@@ -337,19 +333,19 @@ ldconfig
 
 log "Patching Java source post-generated\n"
 # Patch Imgproc.java to fix memory leaks
-sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Converters.Mat_to_vector_vector_Point(contours_mat, contours);\n        contours_mat.release();\n        contours_mat.delete();/g' "$opencvhome$imgproc"
+#sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Converters.Mat_to_vector_vector_Point(contours_mat, contours);\n        contours_mat.release();\n        contours_mat.delete();/g' "$opencvhome$imgproc"
 
 # Patch Converters.java to fix memory leaks
-sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();\n            mi.delete();/g' "$opencvhome$converters"
+#sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();\n            mi.delete();/g' "$opencvhome$converters"
 
 # Patch DeviceInfo.java to fix memory leaks
-sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$deviceinfo"
+#sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$deviceinfo"
 
 # Patch TargetArchs.java to fix memory leaks
-sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$targetarchs"
+#sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$targetarchs"
 
 # Rebuild OpenCV jar file with patched classes
-make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
+#make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
 
 # Set permissions on OpenCV dir to user that ran script
 chown -R $curuser:$curuser $opencvhome
