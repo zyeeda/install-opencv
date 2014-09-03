@@ -284,22 +284,22 @@ echo "\nCopying $tmpdir/opencv to $opencvhome"
 
 log "Patching source pre-compile\n"
 # Patch gen_java.py to generate VideoWriter by removing from class_ignore_list
-#sed -i 's/\"VideoWriter\",/'\#\"VideoWriter\",'/g' "$opencvhome$genjava"
+sed -i 's/\"VideoWriter\",/'\#\"VideoWriter\",'/g' "$opencvhome$genjava"
+
+# Patch gen_java.py to generate constants by removing from const_ignore_list
+sed -i 's/\"CV_CAP_PROP_FPS\",/'\#\"CV_CAP_PROP_FPS\",'/g' "$opencvhome$genjava"
+sed -i 's/\"CV_CAP_PROP_FOURCC\",/'\#\"CV_CAP_PROP_FOURCC\",'/g' "$opencvhome$genjava"
+sed -i 's/\"CV_CAP_PROP_FRAME_COUNT\",/'\#\"CV_CAP_PROP_FRAME_COUNT\",'/g' "$opencvhome$genjava"
 
 # Patch gen_java.py to generate delete() instead of finalize() methods
-#sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$genjava"
+sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$genjava"
 
 # Patch core+Mat.java to remove finalize method which causes heap leaks
 # Renamed method is delete() which calls n_delete just like finalize did
-#sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$coremat"
-#sed -i 's~super.finalize~//super.finalize~g' "$opencvhome$coremat"
+sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$coremat"
+sed -i 's~super.finalize~//super.finalize~g' "$opencvhome$coremat"
 
-# Patch gen_java.py to generate constants by removing from const_ignore_list
-#sed -i 's/\"CV_CAP_PROP_FPS\",/'\#\"CV_CAP_PROP_FPS\",'/g' "$opencvhome$genjava"
-#sed -i 's/\"CV_CAP_PROP_FOURCC\",/'\#\"CV_CAP_PROP_FOURCC\",'/g' "$opencvhome$genjava"
-#sed -i 's/\"CV_CAP_PROP_FRAME_COUNT\",/'\#\"CV_CAP_PROP_FRAME_COUNT\",'/g' "$opencvhome$genjava"
-
-# Need to test for OpenCV 3.0.0-alpha
+# Need to test for OpenCV 3.0.0-dev
 
 # Patch jdhuff.c to remove "Invalid SOS parameters for sequential JPEG" warning
 #sed -i 's~if (cinfo->Ss~//if (cinfo->Ss~g' "$opencvhome$jdhuff"
@@ -333,10 +333,10 @@ ldconfig
 
 log "Patching Java source post-generated\n"
 # Patch Imgproc.java to fix memory leaks
-#sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Converters.Mat_to_vector_vector_Point(contours_mat, contours);\n        contours_mat.release();\n        contours_mat.delete();/g' "$opencvhome$imgproc"
+sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Converters.Mat_to_vector_vector_Point(contours_mat, contours);\n        contours_mat.release();\n        contours_mat.delete();/g' "$opencvhome$imgproc"
 
 # Patch Converters.java to fix memory leaks
-#sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();\n            mi.delete();/g' "$opencvhome$converters"
+sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();\n            mi.delete();/g' "$opencvhome$converters"
 
 # Patch DeviceInfo.java to fix memory leaks
 #sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$deviceinfo"

@@ -15,8 +15,6 @@ until the OpenCV build is solid. TBB option causes compile failure on x86_64 and
 [question](http://answers.opencv.org/question/40544/opencv-300-alpha-build-failure-with-tbb)
 on OpenCV questions if you want see the log output. For now x86/x86_64 will not build with TBB.
 Need to do:
-* Get Java examples to compile
-* Java patching to fix memory leaks caused by finalize method
 * jdhuff patching
 * jdmarker patching
 * Test build on ARM

@@ -21,10 +21,10 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
-import org.opencv.highgui.VideoCapture;
-import org.opencv.highgui.VideoWriter;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.VideoWriter;
+import org.opencv.videoio.Videoio;
 
 /**
  * Uses moving average to determine change percent.
@@ -128,12 +128,12 @@ final class MotionDetect {
         logger.log(Level.INFO, String.format("Output file: %s", outputFile));
         VideoCapture videoCapture = new VideoCapture(url);
         final Size frameSize = new Size(
-                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
-                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
         logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
         final FourCC fourCC = new FourCC("DIVX");
         VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(),
-                videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);
+                videoCapture.get(Videoio.CAP_PROP_FPS), frameSize, true);
         final Mat mat = new Mat();
         int frames = 0;
         final Mat workImg = new Mat();
@@ -186,7 +186,7 @@ final class MotionDetect {
                     rectPoint2.x = rect.x + rect.width;
                     rectPoint2.y = rect.y + rect.height;
                     // Draw rectangle around fond object
-                    Core.rectangle(mat, rectPoint1, rectPoint2, rectColor, 2);
+                    Imgproc.rectangle(mat, rectPoint1, rectPoint2, rectColor, 2);
                 }
             }
             videoWriter.write(mat);

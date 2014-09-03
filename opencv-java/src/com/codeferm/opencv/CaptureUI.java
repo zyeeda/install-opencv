@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
-import org.opencv.highgui.VideoCapture;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.Videoio;
 
 /**
  * A simple video capture applet. The Java bindings do not have an imshow
@@ -94,8 +94,8 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
             e.printStackTrace();
         }
         frameSize = new Size(
-                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
-                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
         logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
         logger.log(Level.INFO, "Press [Esc] to exit");
         logger.log(Level.INFO, String.format("URL: %s", url));

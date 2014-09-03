@@ -21,10 +21,11 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
-import org.opencv.highgui.VideoCapture;
-import org.opencv.highgui.VideoWriter;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.HOGDescriptor;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.VideoWriter;
+import org.opencv.videoio.Videoio;
 
 /**
  * Histogram of Oriented Gradients ([Dalal2005]) object detector.
@@ -88,12 +89,12 @@ final class PeopleDetect {
         logger.log(Level.INFO, String.format("Output file: %s", outputFile));
         final VideoCapture videoCapture = new VideoCapture(url);
         final Size frameSize = new Size(
-                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
-                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
         logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
         final FourCC fourCC = new FourCC("DIVX");
         VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(),
-                videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);
+                videoCapture.get(Videoio.CAP_PROP_FPS), frameSize, true);
         final Mat mat = new Mat();
         // final HOGDescriptor hog = new HOGDescriptor(new Size(128, 64),
         // new Size(16, 16), new Size(8, 8), new Size(8, 8), 9, 0, -1, 0,
@@ -129,7 +130,7 @@ final class PeopleDetect {
                     rectPoint2.x = rect.x + rect.width;
                     rectPoint2.y = rect.y + rect.height;
                     // Draw rectangle around fond object
-                    Core.rectangle(mat, rectPoint1, rectPoint2, rectColor, 2);
+                    Imgproc.rectangle(mat, rectPoint1, rectPoint2, rectColor, 2);
                     fontPoint.x = rect.x;
                     // CHECKSTYLE:OFF MagicNumber - Magic numbers here for
                     // illustration
@@ -138,7 +139,7 @@ final class PeopleDetect {
                     // Print weight
                     // CHECKSTYLE:OFF MagicNumber - Magic numbers here for
                     // illustration
-                    Core.putText(mat,
+                    Imgproc.putText(mat,
                             String.format("%1.2f", weightList.get(i++)),
                             fontPoint, Core.FONT_HERSHEY_PLAIN, 1.5, fontColor,
                             2, Core.LINE_AA, false);

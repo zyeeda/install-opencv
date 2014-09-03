@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
-import org.opencv.highgui.VideoCapture;
-import org.opencv.highgui.VideoWriter;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.VideoWriter;
+import org.opencv.videoio.Videoio;
 
 /**
  * Example of VideoWriter class.
@@ -86,12 +86,12 @@ final class Writer {
         logger.log(Level.INFO, String.format("Output file: %s", outputFile));
         VideoCapture videoCapture = new VideoCapture(url);
         final Size frameSize = new Size(
-                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_WIDTH),
-                (int) videoCapture.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
         logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
         final FourCC fourCC = new FourCC("XVID");
         VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(),
-                videoCapture.get(Highgui.CV_CAP_PROP_FPS), frameSize, true);
+                videoCapture.get(Videoio.CAP_PROP_FPS), frameSize, true);
         final Mat mat = new Mat();
         int frames = 0;
         final long startTime = System.currentTimeMillis();
