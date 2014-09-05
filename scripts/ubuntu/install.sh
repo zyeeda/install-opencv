@@ -275,8 +275,10 @@ log "Installing OpenCV $opencvver...\n"
 cd "$tmpdir"
 git clone "$opencvurl"
 opencvhome="$HOME/opencv-$opencvver"
+log "Removing $opencvhome\n"
+rm -rf "$opencvhome"
+log "Copying $tmpdir/opencv to $opencvhome\n"
 cp -r "$tmpdir/opencv" "$opencvhome"
-echo "\nCopying $tmpdir/opencv to $opencvhome"
 
 #
 # Patch source pre-compile
@@ -299,12 +301,8 @@ sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/pu
 sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$coremat"
 sed -i 's~super.finalize~//super.finalize~g' "$opencvhome$coremat"
 
-# Need to test for OpenCV 3.0.0-dev
-
 # Patch jdhuff.c to remove "Invalid SOS parameters for sequential JPEG" warning
-#sed -i 's~if (cinfo->Ss~//if (cinfo->Ss~g' "$opencvhome$jdhuff"
-#sed -i 's~cinfo->Ah~//cinfo->Ah~g' "$opencvhome$jdhuff"
-#sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL~g' "$opencvhome$jdhuff"
+sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);\'$'\n      ; // NOP~g' "$opencvhome$jdhuff"
 
 # Patch jdmarker.c to remove "Corrupt JPEG data: xx extraneous bytes before marker 0xd9" warning
 #sed -i 's~WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~//WARNMS2(cinfo, JWRN_EXTRANEOUS_DATA~g' "$opencvhome$jdmarker"
