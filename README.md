@@ -11,9 +11,12 @@ I created a branch [2_4_9_0](https://github.com/sgjava/install-opencv/tree/2_4_9
 since that's the last stable build script before OpenCV 3.0.0.
 
 The master branch now builds OpenCV 3.0.0 from GitHub, so you can consider this experimental
-until the OpenCV is release quality.
+until the OpenCV build is solid. TBB option causes compile failure on x86_64 and I posted a
+[question](http://answers.opencv.org/question/40544/opencv-300-alpha-build-failure-with-tbb)
+on OpenCV questions if you want see the log output. For now x86/x86_64 will not build with TBB.
 Need to do:
-* Get TBB working on ARM
+* Test build on ARM (I'm currently trying to build with TBB off like x86)
+* Get TBB working
 
 ### WARNING
 
