@@ -11,8 +11,8 @@ I created a branch [2_4_9_0](https://github.com/sgjava/install-opencv/tree/2_4_9
 since that's the last stable build script before OpenCV 3.0.0.
 
 The master branch now builds OpenCV 3.0.0 from GitHub, so you can consider this experimental
-until the OpenCV build is release quality. TBB is now thanks to an answer to a
-[bug](http://code.opencv.org/issues/3900) I reported. The suggested cmake arguments worked.
+until the OpenCV build is release quality. TBB works now thanks to an answer after reporting
+the problem as a [bug](http://code.opencv.org/issues/3900). The suggested cmake arguments worked.
 I also answered my own [question](http://answers.opencv.org/question/40544/opencv-300-alpha-build-failure-with-tbb)
 if you are interested.
 Need to do:
