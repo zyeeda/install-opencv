@@ -12,8 +12,8 @@ since that's the last stable build script before OpenCV 3.0.0.
 
 The master branch now builds OpenCV 3.0.0 from GitHub, so you can consider this experimental
 until the OpenCV build is release quality. TBB should be working now thanks to a
-[bug](http://code.opencv.org/issues/3900). I also answered my own 
-[question](http://answers.opencv.org/question/40544/opencv-300-alpha-build-failure-with-tbb)
+[bug](http://code.opencv.org/issues/3900) I reported. The suggested cmake arguments worked.
+I also answered my own [question](http://answers.opencv.org/question/40544/opencv-300-alpha-build-failure-with-tbb)
 if you are interested.
 Need to do:
 * Finish TBB testing on x86 and ARM.
