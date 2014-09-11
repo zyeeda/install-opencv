@@ -11,14 +11,12 @@ I created a branch [2_4_9_0](https://github.com/sgjava/install-opencv/tree/2_4_9
 since that's the last stable build script before OpenCV 3.0.0.
 
 The master branch now builds OpenCV 3.0.0 from GitHub, so you can consider this experimental
-until the OpenCV build is release quality. TBB option causes compile failure on x86_64 and I posted a
+until the OpenCV build is release quality. TBB should be working now thanks to a
+[bug](http://code.opencv.org/issues/3900). I also answered my own 
 [question](http://answers.opencv.org/question/40544/opencv-300-alpha-build-failure-with-tbb)
-on OpenCV questions if you want see the log output. I opened a ticket if you want to
-[track](http://code.opencv.org/issues/3900) the defect. It appears related to using
-BUILD_TBB=ON and BUILD_SHARED_LIBS=ON together. For now x86/x86_64 will not build with TBB.
+if you are interested.
 Need to do:
-* Test build on ARM (I'm currently trying to build with TBB off like x86)
-* Get TBB working
+* Finish TBB testing on x86 and ARM.
 
 ### WARNING
 
