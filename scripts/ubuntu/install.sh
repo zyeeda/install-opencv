@@ -335,14 +335,8 @@ sed -i 's/Converters.Mat_to_vector_vector_Point(contours_mat, contours);/Convert
 # Patch Converters.java to fix memory leaks
 sed -i 's/pts.add(pt);/pts.add(pt);\n            mi.release();\n            mi.delete();/g' "$opencvhome$converters"
 
-# Patch DeviceInfo.java to fix memory leaks
-#sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$deviceinfo"
-
-# Patch TargetArchs.java to fix memory leaks
-#sed -i ':a;N;$!ba;s/@Override\n    protected void finalize() throws Throwable/public void delete()/g' "$opencvhome$targetarchs"
-
 # Rebuild OpenCV jar file with patched classes
-#make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
+make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
 
 # Set permissions on OpenCV dir to user that ran script
 chown -R $curuser:$curuser $opencvhome
