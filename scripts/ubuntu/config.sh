@@ -47,20 +47,20 @@ jdmarker="/3rdparty/libjpeg/jdmarker.c"
 tmpdir="$HOME/opencv-$opencvver-libs"
 
 # Set to True to install Java
-installjava="Trye"
+installjava="True"
 
 # Oracle JDK
-javahome=/usr/lib/jvm/jdk1.8.0
+javahome=/usr/lib/jvm/jdk1.8
 
 if [ $installjava = "True" ]; then
-	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u20-b26/"
-	jdkver="jdk1.8.0_20"
+	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u25-b17/"
+	jdkver="jdk1.8.0_25"
 	if [ "$arch" = "x86_64" ]; then
-		jdkarchive="jdk-8u20-linux-x64.tar.gz"
+		jdkarchive="jdk-8u25-linux-x64.tar.gz"
 	elif [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
-		jdkarchive="jdk-8u20-linux-i586.tar.gz"
+		jdkarchive="jdk-8u25-linux-i586.tar.gz"
 	elif [ "$arch" = "armv7l" ]; then
-		jdkarchive="jdk-8u20-linux-arm-vfp-hflt.tar.gz"
+		jdkarchive="jdk-8u25-linux-arm-vfp-hflt.tar.gz"
 	else
 		echo "\nNo supported architectures detected!"
 		exit 1
@@ -74,7 +74,7 @@ if [ $installjava = "True" ]; then
 fi
 
 # Set to True to remove existing ffmpeg, x264, and other dependencies (this removes a lot of other dependencies you may want)
-removelibs="False"
+removelibs="True"
 
 # yasm
 yasmurl="http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz"
